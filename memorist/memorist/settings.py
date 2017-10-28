@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
     'wordlist',
 ]
 
@@ -119,3 +120,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# BOOTSTRAP3
+BOOTSTRAP3 = {
+    'jquery_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+    'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/'
+}
