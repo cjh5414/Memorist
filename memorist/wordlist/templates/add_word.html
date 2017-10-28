@@ -5,6 +5,10 @@
     <title>Add Word</title>
 </head>
 <body>
-    add word
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="추가">
+    </form>
 </body>
 </html>
