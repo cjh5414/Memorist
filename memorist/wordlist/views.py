@@ -1,3 +1,9 @@
+from django.views import View
 from django.shortcuts import render
 
-# Create your views here.
+
+class WordAddView(View):
+    template_name = 'add_word.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
