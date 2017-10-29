@@ -5,6 +5,18 @@
     <title>Add Word</title>
 </head>
 <body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Memorist</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/words/add/">단어 추가</a></li>
+            <li><a href="/words/">단어 목록</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
     {% load bootstrap3 %}
 
     {% bootstrap_css %}
@@ -12,12 +24,13 @@
 
     {% bootstrap_messages %}
 
-    <form class="form-inline" method="post">
+    <form method="post">
         {% csrf_token %}
-        {% bootstrap_form form layout='inline' %}
+        {% bootstrap_form form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">추가</button>
         {% endbuttons %}
     </form>
+</div>
 </body>
 </html>
