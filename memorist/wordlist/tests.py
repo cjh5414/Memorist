@@ -11,11 +11,21 @@ def test_add_word(client):
     assert 'Answer' in response.content.decode('utf-8')
 
     client.post('/words/add/', {
-        'question': '사과',
-        'answer': 'apple',
+        'question': '노트북',
+        'answer': 'laptop',
     })
 
-    word = Word.objects.get(question='사과')
+    word = Word.objects.get(question='노트북')
 
-    assert word.answer == 'apple'
+    assert word.answer == 'laptop'
 
+
+@pytest.mark.django_db
+def test_view_words(client):
+    response = client.get('/words/')
+
+    words = Word.objects.all()
+
+    for word in words:
+        assert word.question in response.content.decode('utf-8')
+        assert word.answer in response.content.decode('utf-8')

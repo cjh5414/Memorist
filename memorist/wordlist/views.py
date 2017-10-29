@@ -1,6 +1,7 @@
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView
 
 from wordlist.forms import WordAddForm
+from wordlist.models import Word
 
 
 class WordAddView(FormView):
@@ -12,3 +13,13 @@ class WordAddView(FormView):
         form.save()
 
         return super(WordAddView, self).form_valid(form)
+
+
+class WordListView(ListView):
+    template_name = 'word_list.html'
+    model = Word
+
+    def get_queryset(self):
+        queryset = Word.objects.all()
+
+        return queryset
