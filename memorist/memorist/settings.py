@@ -120,10 +120,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 
 # BOOTSTRAP3
 BOOTSTRAP3 = {
-    'jquery_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-    'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/'
+    'jquery_url': '//code.jquery.com/jquery.min.js',
+    'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/',
 }

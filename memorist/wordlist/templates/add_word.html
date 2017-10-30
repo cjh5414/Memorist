@@ -12,17 +12,34 @@
     {% load bootstrap3 %}
 
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
+    {% bootstrap_javascript jquery=1 %}
 
     {% bootstrap_messages %}
 
     <form method="post">
         {% csrf_token %}
-        {% bootstrap_form form %}
+        <div class="form-group">
+            <label class="control-label" for="id_question">Question</label>
+            <input type="text" name="question" maxlength="255" class="form-control" placeholder="Question" required id="id_question"/>
+        </div>
+        {% buttons %}
+            <button id="translateButton" type="button" class="btn btn-primary">번역</button>
+        {% endbuttons %}
+        <span id="translateResult">
+            번역전
+        </span>
+        <div class="form-group">
+            <label class="control-label" for="id_answer">Answer</label>
+            <input type="text" name="answer" maxlength="255" class="form-control" placeholder="Answer" required id="id_answer"/>
+        </div>
         {% buttons %}
             <button type="submit" class="btn btn-primary">추가</button>
         {% endbuttons %}
     </form>
 </div>
+
+{% load static %}
+<script src="{% static 'js/wordlist.js' %}"></script>
+
 </body>
 </html>
