@@ -1,4 +1,5 @@
 import pytest
+import json
 
 from wordlist.models import *
 
@@ -29,3 +30,14 @@ def test_view_words(client):
     for word in words:
         assert word.question in response.content.decode('utf-8')
         assert word.answer in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_translate_api(client):
+    response = client.post('/translate/', {
+        'question': '번역',
+    })
+
+    response_data = json.loads(response.content)
+    assert response.status_code == 200
+    assert response_data['result'] == 'translation'
