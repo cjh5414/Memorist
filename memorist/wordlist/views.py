@@ -33,13 +33,14 @@ class WordListView(ListView):
 
 class WordTranslate(View):
     def post(self, request):
+        question = request.POST['question']
         client_id = os.getenv('PAPAGO_API_CLIENT_ID')
         client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
         if client_id is None or client_secret is None:
             print("Error : Missed Environment Variable")
             return
 
-        encText = urllib.parse.quote("번역")
+        encText = urllib.parse.quote(question)
         data = "source=ko&target=en&text=" + encText
         url = "https://openapi.naver.com/v1/papago/n2mt"
         request = urllib.request.Request(url)
