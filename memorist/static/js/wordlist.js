@@ -28,7 +28,7 @@ $("#id_translate_button").click(function () {
         data: {'question': $("#id_question").val() },
         dataType: "json",
         success: function (response) {
-            alert('성공');
+            $("#id_answer").val(response.result);
         },
         error: function (request, status, error) {
             alert("API 요청 실패");

@@ -41,3 +41,11 @@ def test_translate_api(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['result'] == 'translation'
+
+    response = client.post('/translate/', {
+        'question': '과일',
+    })
+
+    response_data = json.loads(response.content)
+    assert response.status_code == 200
+    assert response_data['result'] == 'Fruit'
