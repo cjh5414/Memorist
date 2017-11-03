@@ -31,11 +31,11 @@ class WordListView(ListView):
         return queryset
 
 
-class WordDeleteView(DeleteView):
-    def delete(self, request, *args, **kwargs):
+class WordDeleteView(View):
+    def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
         word.delete()
-        return HttpResponseRedirect('/words/')
+        return JsonResponse({'result': 'True'})
 
 
 class WordTranslate(View):
@@ -59,7 +59,6 @@ class WordTranslate(View):
             response_body = response.read()
             response_data = json.loads(response_body)
             translated_text = response_data['message']['result']['translatedText']
-            response = JsonResponse({'result': translated_text})
-            return response
+            return JsonResponse({'result': translated_text})
         else:
             print("Error Code:" + rescode)

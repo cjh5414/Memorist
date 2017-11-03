@@ -34,5 +34,21 @@ $("#id_translate_button").click(function () {
             alert("API 요청 실패");
         }
     });
-    $("#id_translate_result").text('번역 후');
+});
+
+$(".delete_word_btn").click(function() {
+    parent_tag = $(this).parent();
+
+    $.ajax({
+        type: "POST",
+        url: "/words/" + $(this).data("id") + "/delete/",
+        success: function (response) {
+            if(response.result === "True") {
+                parent_tag.remove();
+            }
+        },
+        error: function (request, status, error) {
+            alert("API 요청 실패");
+        }
+    });
 });

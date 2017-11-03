@@ -20,14 +20,20 @@
         <tr>
             <th>Question</th>
             <th>Answer</th>
+            <th></th>
         </tr>
         {% for word in word_list %}
             <tr>
-                <td>{{ word.question}}</td>
+                <td>{{ word.question }}</td>
                 <td>{{ word.answer }}</td>
+                <td class="delete_word_btn" style="color: red; cursor: pointer;" data-id="{{ word.id }}">삭제</td>
             </tr>
         {% endfor %}
     </table>
 </div>
+
+{% load static %}
+<script src="{% static 'js/wordlist.js' %}"></script>
+
 </body>
 </html>
