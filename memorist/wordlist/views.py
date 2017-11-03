@@ -3,8 +3,8 @@ import json
 import urllib.request
 
 from django.views import View
-from django.views.generic import FormView, ListView
-from django.http import JsonResponse
+from django.views.generic import *
+from django.http import JsonResponse, HttpResponseRedirect
 
 from wordlist.forms import WordAddForm
 from wordlist.models import Word
@@ -29,6 +29,13 @@ class WordListView(ListView):
         queryset = Word.objects.all()
 
         return queryset
+
+
+class WordDeleteView(DeleteView):
+    def delete(self, request, *args, **kwargs):
+        word = Word.objects.get(id=self.kwargs['pk'])
+        word.delete()
+        return HttpResponseRedirect('/words/')
 
 
 class WordTranslate(View):

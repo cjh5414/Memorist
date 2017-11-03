@@ -33,6 +33,20 @@ def test_view_words(client):
 
 
 @pytest.mark.django_db
+def test_delete_word(client):
+    word = Word.objects.get(question='사과')
+
+    word_list_response = client.get('/words/')
+    assert '사과' in word_list_response.content.decode('utf-8')
+
+    response = client.post('/words/%d/delete/' % word.id)
+    assert response.url == '/words/'
+
+    word_list_response = client.get('/words/')
+    assert '사과' not in word_list_response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
 def test_translate_api(client):
     response = client.post('/translate/', {
         'question': '번역',
