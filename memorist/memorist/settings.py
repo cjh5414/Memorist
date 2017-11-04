@@ -89,6 +89,9 @@ MYSQL_PASSWORD = os.environ['MEMORIST_MYSQL_PASSWORD']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
         'NAME': MYSQL_NAME,
         'USER': MYSQL_USER,
         'PASSWORD': MYSQL_PASSWORD,
