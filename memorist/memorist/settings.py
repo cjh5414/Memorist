@@ -75,12 +75,29 @@ WSGI_APPLICATION = 'memorist.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+MYSQL_NAME = os.environ['MEMORIST_MYSQL_NAME']
+MYSQL_USER = os.environ['MEMORIST_MYSQL_USER']
+MYSQL_PASSWORD = os.environ['MEMORIST_MYSQL_PASSWORD']
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': MYSQL_NAME,
+        'USER': MYSQL_USER,
+        'PASSWORD': MYSQL_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
+DATABASE_OPTIONS = {'charset': 'utf8'}
 
 
 # Password validation
