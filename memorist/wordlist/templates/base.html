@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load bootstrap3 %}
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery=1 %}
+
+    {% bootstrap_messages %}
+
+    <title>Memorist - {% block title %}{% endblock %}</title>
+</head>
+<body>
+
+{% include 'nav.html' %}
+
+<div class="container">
+    {% block body%}
+    {% endblock %}
+</div>
+
+{% load static %}
+<script src="{% static 'js/wordlist.js' %}"></script>
+
+</body>
+</html>

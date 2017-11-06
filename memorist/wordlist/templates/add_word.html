@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Word</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-{% include 'nav.html' %}
+{% block title %}Add Word{% endblock %}
 
-<div class="container">
-    {% load bootstrap3 %}
-
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery=1 %}
-
-    {% bootstrap_messages %}
-
+{% block body %}
     <form method="post">
+        {% load bootstrap3 %}
         {% csrf_token %}
         <div class="form-group">
             <label class="control-label" for="id_question">Question</label>
@@ -33,10 +21,4 @@
             <button type="submit" class="btn btn-primary">추가</button>
         {% endbuttons %}
     </form>
-</div>
-
-{% load static %}
-<script src="{% static 'js/wordlist.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}
