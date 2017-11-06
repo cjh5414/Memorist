@@ -47,7 +47,7 @@ def test_delete_word(client):
 
 
 @pytest.mark.django_db
-def test_translate_api(client):
+def test_translate_api_ko_to_en(client):
     response = client.post('/translate/', {
         'question': '번역',
     })
@@ -63,3 +63,22 @@ def test_translate_api(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['result'] == 'Fruit'
+
+
+@pytest.mark.django_db
+def test_translate_api_en_to_ko(client):
+    response = client.post('/translate/', {
+        'question': 'nurse',
+    })
+
+    response_data = json.loads(response.content)
+    assert response.status_code == 200
+    assert response_data['result'] == '간호사.'
+
+    response = client.post('/translate/', {
+        'question': 'i am a boy',
+    })
+
+    response_data = json.loads(response.content)
+    assert response.status_code == 200
+    assert response_data['result'] == '나는 소년 입니다.'
