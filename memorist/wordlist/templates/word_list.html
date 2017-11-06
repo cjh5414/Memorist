@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Word list</title>
 </head>
 <body>
@@ -26,7 +27,7 @@
             <tr>
                 <td>{{ word.question }}</td>
                 <td>{{ word.answer }}</td>
-                <td class="delete_word_btn" style="color: red; cursor: pointer;" data-id="{{ word.id }}">삭제</td>
+                <td class="delete_word_btn" style="color: red; cursor: pointer;" data-id="{{ word.id }}">X</td>
             </tr>
         {% endfor %}
     </table>
