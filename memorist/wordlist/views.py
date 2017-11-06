@@ -48,12 +48,19 @@ class WordTranslate(View):
             return
 
         encText = urllib.parse.quote(question)
-        data = "source=ko&target=en&text=" + encText
+        lang = WordTranslate.what_is_language(question)
+        if lang == 'en':
+            data = "source=en&target=ko&text=" + encText
+        elif lang == 'ko':
+            data = "source=ko&target=en&text=" + encText
+        else:
+            return
+
         url = "https://openapi.naver.com/v1/papago/n2mt"
         request = urllib.request.Request(url)
         request.add_header("X-Naver-Client-Id", client_id)
         request.add_header("X-Naver-Client-Secret", client_secret)
-        response = urllib.request.urlopen(request, data=data.encode("utf-8"))
+        response = urllib.request.urlopen(request, data=data.encode('utf-8'))
         rescode = response.getcode()
         if rescode == 200:
             response_body = response.read()
@@ -62,3 +69,15 @@ class WordTranslate(View):
             return JsonResponse({'result': translated_text})
         else:
             print("Error Code:" + rescode)
+
+    @staticmethod
+    def what_is_language(question):
+        import re
+        hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
+        word = question.split(' ')[0]
+        result = hangul.sub('', word)
+
+        if len(result) > 0:
+            return 'ko'
+        else:
+            return 'en'
