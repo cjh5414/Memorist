@@ -27,7 +27,7 @@ SECRET_KEY = os.environ["MEMORIST_SECRET_KEY"]
 DEBUG = True
 ALLOWED_HOSTS = []
 
-if os.environ['MEMORIST_ENVIRONMENT'] == "production":
+if os.getenv('MEMORIST_ENVIRONMENT') == "production":
     DEBUG = False
     ALLOWED_HOSTS = ['*']
 
