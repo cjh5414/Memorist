@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Word list</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-{% include 'nav.html' %}
+{% block title %}Word list{% endblock %}
 
-<div class="container">
-    {% load bootstrap3 %}
-
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery=1 %}
-
-    {% bootstrap_messages %}
-
+{% block body %}
     <table class="table table-striped">
         <tr>
             <th>Question</th>
@@ -31,10 +17,4 @@
             </tr>
         {% endfor %}
     </table>
-</div>
-
-{% load static %}
-<script src="{% static 'js/wordlist.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}
