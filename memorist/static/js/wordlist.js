@@ -21,20 +21,30 @@ function getCookie(c_name)
  }
 
 $("#id_translate_button").click(function () {
-    $.ajax({
-        type: "POST",
-        // url: "{% url 'wordlist:word_translate' %}",
-        url: "/translate/",
-        data: {'question': $("#id_question").val() },
-        dataType: "json",
-        success: function (response) {
-            $("#id_answer").val(response.result);
-        },
-        error: function (request, status, error) {
-            alert("API 요청 실패");
-        }
-    });
+    var question = $("#id_question").val();
+    if(question.length!==0) {
+        $.ajax({
+            type: "POST",
+            // url: "{% url 'wordlist:word_translate' %}",
+            url: "/translate/",
+            data: {'question': question},
+            dataType: "json",
+            success: function (response) {
+                $("#id_answer").val(response.result);
+            },
+            error: function (request, status, error) {
+                alert("API 요청 실패");
+            }
+        });
+    }
 });
+
+
+$("#id_naver_dic_button").click(function () {
+    var question = $("#id_question").val();
+    window.open('http://endic.naver.com/search.nhn?sLn=kr&isOnlyViewEE=N&query=' + question, '_self');
+});
+
 
 $(".delete_word_btn").click(function() {
     parent_tag = $(this).parent();
