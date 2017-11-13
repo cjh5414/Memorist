@@ -11,6 +11,9 @@
 
     {% bootstrap_messages %}
 
+    {% load static %}
+    <link href="{% static 'css/wordlist.css' %}" rel="stylesheet" type="text/css" />
+
     <title>Memorist - {% block title %}{% endblock %}</title>
 </head>
 <body>
