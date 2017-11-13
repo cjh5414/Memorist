@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+@font-face {
+    font-family: NanumSquareRoundR;
+    src: local(NanumSquareRoundR),
+         url(font/NanumSquareRoundR.ttf) format('truetype');
+}
+
+body {
+    font-size: 200%;
+}
