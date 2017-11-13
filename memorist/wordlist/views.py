@@ -3,6 +3,7 @@ import json
 import urllib.request
 
 from django.views import View
+from django.shortcuts import render
 from django.views.generic import *
 from django.http import JsonResponse, HttpResponseRedirect
 
@@ -81,3 +82,14 @@ class WordTranslate(View):
             return 'ko'
         else:
             return 'en'
+
+
+class WordStudy(View):
+    template_name = 'study_word.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    #
+    # def post(self, request):
+    #     pass

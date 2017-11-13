@@ -82,3 +82,12 @@ def test_translate_api_en_to_ko(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['result'] == '나는 소년 입니다.'
+
+
+@pytest.mark.django_db
+def test_basic_study_view(client):
+    response = client.get('/study/')
+
+    assert '다음' in response.content.decode('utf-8')
+    assert '답 확인' in response.content.decode('utf-8')
+    assert '제거' in response.content.decode('utf-8')
