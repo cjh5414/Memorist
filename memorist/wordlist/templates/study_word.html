@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Study word{% endblock %}
+
+{% block body %}
+    <p>Question : {{ word.question }}</p>
+    <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
+
+    {% load bootstrap3 %}
+    {% buttons %}
+        <button id="id_study_confirm_btn" type="button" class="btn btn-primary">답 확인</button>
+        <button id="id_study_next_btn" type="button" class="btn btn-primary">다음</button>
+        <button id="id_study_remove_btn" type="button" class="btn btn-primary">제거</button>
+    {% endbuttons %}
+{% endblock %}
