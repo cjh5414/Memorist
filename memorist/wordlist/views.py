@@ -88,10 +88,6 @@ class WordStudy(View):
     template_name = 'study_word.html'
 
     def get(self, request):
-        word = Word.objects.get(question='사과')
+        word = Word.objects.all().order_by('?').first()
 
         return render(request, self.template_name, {'word': word})
-
-    #
-    # def post(self, request):
-    #     pass
