@@ -88,7 +88,9 @@ class WordStudy(View):
     template_name = 'study_word.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        word = Word.objects.get(question='사과')
+
+        return render(request, self.template_name, {'word': word})
 
     #
     # def post(self, request):
