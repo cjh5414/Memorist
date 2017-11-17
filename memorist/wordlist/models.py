@@ -1,9 +1,9 @@
 from django.db import models
 
-from utils.models import AliveManager
+from utils.models import AliveManager, TimeStampedModel
 
 
-class Word(models.Model):
+class Word(TimeStampedModel):
     question = models.CharField(max_length=255)
     answer = models.CharField(max_length=255)
     is_delete = models.BooleanField(default=False)
