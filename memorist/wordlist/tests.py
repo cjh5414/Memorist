@@ -94,3 +94,16 @@ def test_basic_study_view(client):
     assert '다음' in response.content.decode('utf-8')
     assert '답 확인' in response.content.decode('utf-8')
     assert '제거' in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_confirm_deleted_word(client):
+    word = Word.objects.get(question='사과')
+
+    response = client.get('/words/deleted/')
+    assert word.question not in response.content.decode('utf-8')
+
+    client.post('/words/%d/delete/' % word.id)
+
+    response = client.get('/words/deleted/')
+    assert word.question in response.content.decode('utf-8')

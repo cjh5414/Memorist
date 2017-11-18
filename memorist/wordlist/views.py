@@ -32,6 +32,16 @@ class WordListView(ListView):
         return queryset
 
 
+class DeletedWordListView(ListView):
+    template_name = 'deleted_word_list.html'
+    model = Word
+
+    def get_queryset(self):
+        queryset = Word.objects.filter(is_delete=True)
+
+        return queryset
+
+
 class WordDeleteView(View):
     def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
