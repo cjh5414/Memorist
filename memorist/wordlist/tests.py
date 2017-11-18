@@ -97,6 +97,17 @@ def test_basic_study_view(client):
 
 
 @pytest.mark.django_db
+def test_study_api(client):
+    response = client.post('/study/next/')
+
+    response_data = json.loads(response.content)
+
+    assert response.status_code == 200
+    word = Word.objects.get(question=response_data['question'])
+    assert word.answer == response_data['answer']
+
+
+@pytest.mark.django_db
 def test_confirm_deleted_word(client):
     word = Word.objects.get(question='사과')
 
