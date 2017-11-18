@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^words/(?P<pk>[0-9]+)/delete/$', views.WordDeleteView.as_view(), name='delete_word'),
     url(r'^translate/$', views.WordTranslate.as_view(), name='word_translate'),
     url(r'^study/$', views.WordStudy.as_view(), name='word_study'),
+    url(r'^study/next/$', views.WordStudyNext.as_view(), name='word_study_next'),
 ]

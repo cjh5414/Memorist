@@ -102,3 +102,13 @@ class WordStudy(View):
         word = Word.alive_objects.all().order_by('?').first()
 
         return render(request, self.template_name, {'word': word})
+
+
+class WordStudyNext(View):
+    def post(self, request, *args, **kwargs):
+        word = Word.alive_objects.all().order_by('?').first()
+
+        return JsonResponse({
+            'question': word.question,
+            'answer': word.answer
+        })
