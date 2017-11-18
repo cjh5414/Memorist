@@ -27,7 +27,17 @@ class WordListView(ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.objects.all()
+        queryset = Word.alive_objects.all()
+
+        return queryset
+
+
+class DeletedWordListView(ListView):
+    template_name = 'deleted_word_list.html'
+    model = Word
+
+    def get_queryset(self):
+        queryset = Word.objects.filter(is_delete=True)
 
         return queryset
 
@@ -35,7 +45,8 @@ class WordListView(ListView):
 class WordDeleteView(View):
     def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
-        word.delete()
+        word.is_delete = True
+        word.save()
         return JsonResponse({'result': 'True'})
 
 
@@ -88,6 +99,6 @@ class WordStudy(View):
     template_name = 'study_word.html'
 
     def get(self, request):
-        word = Word.objects.all().order_by('?').first()
+        word = Word.alive_objects.all().order_by('?').first()
 
         return render(request, self.template_name, {'word': word})
