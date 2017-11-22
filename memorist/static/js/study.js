@@ -12,6 +12,7 @@ $("#id_study_next_btn").click(function () {
             $("#id_study_answer_block").hide();
         },
         error: function (request, status, error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             alert("API 요청 실패");
         }
     });
@@ -23,10 +24,10 @@ $("#id_study_remove_btn").click(function () {
         url: "/words/" + $(this).data("id") + "/delete/",
         success: function (response) {
             if (response.result === "True") {
-                parent_tag.remove();
             }
         },
         error: function (request, status, error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             alert("API 요청 실패");
         }
     });

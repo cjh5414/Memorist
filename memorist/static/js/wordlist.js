@@ -58,6 +58,7 @@ $(".delete_word_btn").click(function() {
             }
         },
         error: function (request, status, error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             alert("API 요청 실패");
         }
     });
