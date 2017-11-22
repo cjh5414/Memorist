@@ -49,6 +49,7 @@ $("#id_naver_dic_button").click(function () {
 $("#id_clear_button").click(function (){
     $("#id_question").val("");
     $("#id_answer").val("");
+    $("#id_question").focus();
 });
 
 
