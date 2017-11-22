@@ -24,6 +24,7 @@ $("#id_study_remove_btn").click(function () {
         url: "/words/" + $(this).data("id") + "/delete/",
         success: function (response) {
             if (response.result === "True") {
+                location.reload();
             }
         },
         error: function (request, status, error) {
@@ -31,5 +32,4 @@ $("#id_study_remove_btn").click(function () {
             alert("API 요청 실패");
         }
     });
-    location.reload();
 });
