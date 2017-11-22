@@ -37,7 +37,7 @@ class DeletedWordListView(ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.objects.filter(is_delete=True)
+        queryset = Word.objects.filter(is_deleted=True)
 
         return queryset
 
@@ -45,7 +45,7 @@ class DeletedWordListView(ListView):
 class WordDeleteView(View):
     def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
-        word.is_delete = True
+        word.is_deleted = True
         word.save()
         return JsonResponse({'result': 'True'})
 
