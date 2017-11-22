@@ -46,6 +46,12 @@ $("#id_naver_dic_button").click(function () {
 });
 
 
+$("#id_clear_button").click(function (){
+    $("#id_question").val("");
+    $("#id_answer").val("");
+});
+
+
 $(".delete_word_btn").click(function() {
     parent_tag = $(this).parent();
 
