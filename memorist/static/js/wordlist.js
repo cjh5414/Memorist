@@ -63,3 +63,22 @@ $(".delete_word_btn").click(function() {
         }
     });
 });
+
+
+$(".restore_word_btn").click(function() {
+    parent_tag = $(this).parent();
+
+    $.ajax({
+        type: "POST",
+        url: "/words/" + $(this).data("id") + "/restore/",
+        success: function (response) {
+            if(response.result === "True") {
+                parent_tag.remove();
+            }
+        },
+        error: function (request, status, error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            alert("API 요청 실패");
+        }
+    });
+});

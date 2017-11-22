@@ -118,3 +118,18 @@ def test_confirm_deleted_word(client):
 
     response = client.get('/words/deleted/')
     assert word.question in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_restore_deleted_word(client):
+    word = Word.objects.get(question='사과')
+
+    client.post('/words/%d/delete/' % word.id)
+
+    word = Word.objects.get(question='사과')
+    assert word.is_deleted is True
+
+    client.post('/words/%d/restore/' % word.id)
+
+    word = Word.objects.get(question='사과')
+    assert word.is_deleted is False

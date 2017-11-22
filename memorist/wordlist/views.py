@@ -50,6 +50,14 @@ class WordDeleteView(View):
         return JsonResponse({'result': 'True'})
 
 
+class WordRestore(View):
+    def post(self, request, *args, **kwargs):
+        word = Word.objects.get(id=self.kwargs['pk'])
+        word.is_deleted = False
+        word.save()
+        return JsonResponse({'result': 'True'})
+
+
 class WordTranslate(View):
     def post(self, request):
         question = request.POST['question']
