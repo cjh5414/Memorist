@@ -13,6 +13,7 @@
             <tr>
                 <td>{{ word.question }}</td>
                 <td>{{ word.answer }}</td>
+                <td class="restore_word_btn" style="color: blue; cursor: pointer;" data-id="{{ word.id }}">복구</td>
             </tr>
         {% endfor %}
     </table>
