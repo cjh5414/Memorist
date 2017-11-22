@@ -43,7 +43,7 @@ def test_delete_word(client):
     assert json.loads(response.content)['result'] == 'True'
 
     delete_word = Word.objects.get(question='사과')
-    assert delete_word.is_delete is True
+    assert delete_word.is_deleted is True
 
     word_list_response = client.get('/words/')
     assert '사과' not in word_list_response.content.decode('utf-8')
