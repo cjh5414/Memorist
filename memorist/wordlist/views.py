@@ -61,18 +61,38 @@ class WordRestore(View):
 class WordTranslate(View):
     def post(self, request):
         question = request.POST['question']
+        lang = WordTranslate.what_is_language(question)
+        papago_translation_result = WordTranslate.request_papago_api(question, lang)
+        if papago_translation_result is False:
+            print('Error : papago API request fail')
+
+        return JsonResponse({'papago_translation_result': papago_translation_result})
+
+    @staticmethod
+    def what_is_language(question):
+        import re
+        hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
+        word = question.split(' ')[0]
+        result = hangul.sub('', word)
+
+        if len(result) > 0:
+            return 'ko'
+        else:
+            return 'en'
+
+    @staticmethod
+    def request_papago_api(question, lang):
         client_id = os.getenv('PAPAGO_API_CLIENT_ID')
         client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
         if client_id is None or client_secret is None:
             print("Error : Missed Environment Variable")
             return
 
-        encText = urllib.parse.quote(question)
-        lang = WordTranslate.what_is_language(question)
+        text = urllib.parse.quote(question)
         if lang == 'en':
-            data = "source=en&target=ko&text=" + encText
+            data = "source=en&target=ko&text=" + text
         elif lang == 'ko':
-            data = "source=ko&target=en&text=" + encText
+            data = "source=ko&target=en&text=" + text
         else:
             return
 
@@ -86,21 +106,14 @@ class WordTranslate(View):
             response_body = response.read()
             response_data = json.loads(response_body)
             translated_text = response_data['message']['result']['translatedText']
-            return JsonResponse({'result': translated_text})
+            return translated_text
         else:
             print("Error Code:" + rescode)
+            return False
 
     @staticmethod
-    def what_is_language(question):
-        import re
-        hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
-        word = question.split(' ')[0]
-        result = hangul.sub('', word)
-
-        if len(result) > 0:
-            return 'ko'
-        else:
-            return 'en'
+    def request_glosbe_api(question, lang):
+        pass
 
 
 class WordStudy(View):

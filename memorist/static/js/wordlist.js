@@ -30,7 +30,7 @@ $("#id_translate_button").click(function () {
             data: {'question': question},
             dataType: "json",
             success: function (response) {
-                $("#id_answer").val(response.result);
+                $("#id_answer").val(response.papago_translation_result);
             },
             error: function (request, status, error) {
                 alert("API 요청 실패");
