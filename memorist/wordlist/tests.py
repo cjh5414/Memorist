@@ -58,6 +58,8 @@ def test_translate_api_ko_to_en(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['papago_translation_result'] == 'translation'
+    assert response_data['glosbe_translation_result'][0] == 'translation'
+    assert response_data['glosbe_translation_result'][1] == 'version'
 
     response = client.post('/translate/', {
         'question': '과일',
@@ -66,6 +68,7 @@ def test_translate_api_ko_to_en(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['papago_translation_result'] == 'Fruit'
+    assert response_data['glosbe_translation_result'][0] == 'fruit'
 
 
 @pytest.mark.django_db
@@ -77,6 +80,8 @@ def test_translate_api_en_to_ko(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['papago_translation_result'] == '간호사.'
+    assert '간호원' in response_data['glosbe_translation_result']
+    assert '간호사' in response_data['glosbe_translation_result']
 
     response = client.post('/translate/', {
         'question': 'i am a boy',
@@ -85,6 +90,7 @@ def test_translate_api_en_to_ko(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['papago_translation_result'] == '나는 소년 입니다.'
+    assert 'glosbe_translation_result' not in response_data
 
 
 @pytest.mark.django_db

@@ -62,11 +62,29 @@ class WordTranslate(View):
     def post(self, request):
         question = request.POST['question']
         lang = WordTranslate.what_is_language(question)
+        translated_result = {}
+
         papago_translation_result = WordTranslate.request_papago_api(question, lang)
         if papago_translation_result is False:
             print('Error : papago API request fail')
 
-        return JsonResponse({'papago_translation_result': papago_translation_result})
+        translated_result['papago_translation_result'] = papago_translation_result
+
+        if not WordTranslate.is_sentence(question):
+            glosbe_translation_result = WordTranslate.request_glosbe_api(question, lang)
+            if glosbe_translation_result is False:
+                print('Error : glosbe API request fail')
+            translated_result['glosbe_translation_result'] = glosbe_translation_result
+
+        return JsonResponse(translated_result)
+
+    @staticmethod
+    def is_sentence(question):
+        words = question.split(' ')
+        if len(words) > 1:
+            return True
+        else:
+            return False
 
     @staticmethod
     def what_is_language(question):
@@ -96,8 +114,8 @@ class WordTranslate(View):
         else:
             return
 
-        url = "https://openapi.naver.com/v1/papago/n2mt"
-        request = urllib.request.Request(url)
+        PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
+        request = urllib.request.Request(PAPAGO_URL)
         request.add_header("X-Naver-Client-Id", client_id)
         request.add_header("X-Naver-Client-Secret", client_secret)
         response = urllib.request.urlopen(request, data=data.encode('utf-8'))
@@ -113,7 +131,25 @@ class WordTranslate(View):
 
     @staticmethod
     def request_glosbe_api(question, lang):
-        pass
+        text = urllib.parse.quote(question)
+        if lang == 'en':
+            data = "from=eng&dest=kor&format=json&pretty=true&phrase=" + text
+        elif lang == 'ko':
+            data = "from=kor&dest=eng&format=json&pretty=true&phrase=" + text
+        else:
+            return
+
+        GLOSBE_URL = 'https://glosbe.com/gapi/translate'
+        response = urllib.request.urlopen(GLOSBE_URL + '?' + data)
+        rescode = response.getcode()
+        if rescode == 200:
+            response_body = response.read()
+            response_data = json.loads(response_body)
+            translated_text = [i.get('phrase')['text'] for i in response_data['tuc'] if i.get('phrase')]
+            return translated_text
+        else:
+            print("Error Code:" + rescode)
+            return False
 
 
 class WordStudy(View):
