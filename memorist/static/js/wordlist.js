@@ -30,7 +30,14 @@ $("#id_translate_button").click(function () {
             data: {'question': question},
             dataType: "json",
             success: function (response) {
-                $("#id_answer").val(response.result);
+                $("#id_answer").val(response.papago_translation_result);
+                if (response.glosbe_translation_result!=undefined) {
+                    for (i=0; i<response.glosbe_translation_result.length; i++) {
+                        $("#id_glosbe_block").append($('<p/>', {
+                            text: response.glosbe_translation_result[i]
+                        }));
+                    }
+                }
             },
             error: function (request, status, error) {
                 alert("API 요청 실패");

@@ -61,34 +61,30 @@ class WordRestore(View):
 class WordTranslate(View):
     def post(self, request):
         question = request.POST['question']
-        client_id = os.getenv('PAPAGO_API_CLIENT_ID')
-        client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
-        if client_id is None or client_secret is None:
-            print("Error : Missed Environment Variable")
-            return
-
-        encText = urllib.parse.quote(question)
         lang = WordTranslate.what_is_language(question)
-        if lang == 'en':
-            data = "source=en&target=ko&text=" + encText
-        elif lang == 'ko':
-            data = "source=ko&target=en&text=" + encText
-        else:
-            return
+        translated_result = {}
 
-        url = "https://openapi.naver.com/v1/papago/n2mt"
-        request = urllib.request.Request(url)
-        request.add_header("X-Naver-Client-Id", client_id)
-        request.add_header("X-Naver-Client-Secret", client_secret)
-        response = urllib.request.urlopen(request, data=data.encode('utf-8'))
-        rescode = response.getcode()
-        if rescode == 200:
-            response_body = response.read()
-            response_data = json.loads(response_body)
-            translated_text = response_data['message']['result']['translatedText']
-            return JsonResponse({'result': translated_text})
+        papago_translation_result = WordTranslate.request_papago_api(question, lang)
+        if papago_translation_result is False:
+            print('Error : papago API request fail')
+
+        translated_result['papago_translation_result'] = papago_translation_result
+
+        if not WordTranslate.is_sentence(question):
+            glosbe_translation_result = WordTranslate.request_glosbe_api(question, lang)
+            if glosbe_translation_result is False:
+                print('Error : glosbe API request fail')
+            translated_result['glosbe_translation_result'] = glosbe_translation_result
+
+        return JsonResponse(translated_result)
+
+    @staticmethod
+    def is_sentence(question):
+        words = question.split(' ')
+        if len(words) > 1:
+            return True
         else:
-            print("Error Code:" + rescode)
+            return False
 
     @staticmethod
     def what_is_language(question):
@@ -101,6 +97,59 @@ class WordTranslate(View):
             return 'ko'
         else:
             return 'en'
+
+    @staticmethod
+    def request_papago_api(question, lang):
+        client_id = os.getenv('PAPAGO_API_CLIENT_ID')
+        client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
+        if client_id is None or client_secret is None:
+            print("Error : Missed Environment Variable")
+            return
+
+        text = urllib.parse.quote(question)
+        if lang == 'en':
+            data = "source=en&target=ko&text=" + text
+        elif lang == 'ko':
+            data = "source=ko&target=en&text=" + text
+        else:
+            return
+
+        PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
+        request = urllib.request.Request(PAPAGO_URL)
+        request.add_header("X-Naver-Client-Id", client_id)
+        request.add_header("X-Naver-Client-Secret", client_secret)
+        response = urllib.request.urlopen(request, data=data.encode('utf-8'))
+        rescode = response.getcode()
+        if rescode == 200:
+            response_body = response.read()
+            response_data = json.loads(response_body)
+            translated_text = response_data['message']['result']['translatedText']
+            return translated_text
+        else:
+            print("Error Code:" + rescode)
+            return False
+
+    @staticmethod
+    def request_glosbe_api(question, lang):
+        text = urllib.parse.quote(question)
+        if lang == 'en':
+            data = "from=eng&dest=kor&format=json&pretty=true&phrase=" + text
+        elif lang == 'ko':
+            data = "from=kor&dest=eng&format=json&pretty=true&phrase=" + text
+        else:
+            return
+
+        GLOSBE_URL = 'https://glosbe.com/gapi/translate'
+        response = urllib.request.urlopen(GLOSBE_URL + '?' + data)
+        rescode = response.getcode()
+        if rescode == 200:
+            response_body = response.read()
+            response_data = json.loads(response_body)
+            translated_text = [i.get('phrase')['text'] for i in response_data['tuc'] if i.get('phrase')]
+            return translated_text
+        else:
+            print("Error Code:" + rescode)
+            return False
 
 
 class WordStudy(View):
