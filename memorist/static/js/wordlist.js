@@ -21,6 +21,8 @@ function getCookie(c_name)
  }
 
 $("#id_translate_button").click(function () {
+    $("#id_glosbe_block").empty();
+
     var question = $("#id_question").val();
     if(question.length!==0) {
         $.ajax({
