@@ -2,6 +2,7 @@ import pytest
 import json
 
 from wordlist.models import *
+from wordlist.views import WordTranslate
 
 
 @pytest.mark.django_db
@@ -139,3 +140,12 @@ def test_restore_deleted_word(client):
 
     word = Word.objects.get(question='사과')
     assert word.is_deleted is False
+
+
+@pytest.mark.django_db
+def test_refine_words(client):
+    words = ['apple', 'apple', 'Cup', 'cup', 'shorts', 'Hat']
+
+    result_words = WordTranslate.refine_words(words)
+
+    assert result_words == ['apple', 'cup', 'shorts', 'hat']
