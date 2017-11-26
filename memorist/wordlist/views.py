@@ -72,6 +72,7 @@ class WordTranslate(View):
 
         if not WordTranslate.is_sentence(question):
             glosbe_translation_result = WordTranslate.request_glosbe_api(question, lang)
+            glosbe_translation_result = WordTranslate.refine_words(glosbe_translation_result)
             if glosbe_translation_result is False:
                 print('Error : glosbe API request fail')
             translated_result['glosbe_translation_result'] = glosbe_translation_result
@@ -150,6 +151,17 @@ class WordTranslate(View):
         else:
             print("Error Code:" + rescode)
             return False
+
+    @staticmethod
+    def refine_words(words):
+        lowered_words = [word.lower() for word in words]
+        result_words = []
+
+        for word in lowered_words:
+            if word not in result_words:
+                result_words.append(word)
+
+        return result_words
 
 
 class WordStudy(View):
