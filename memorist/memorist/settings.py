@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'wordlist',
+    'account'
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,9 @@ BOOTSTRAP3 = {
     'jquery_url': '//code.jquery.com/jquery.min.js',
     'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/',
 }
+
+
+AUTH_USER_MODEL = 'account.User'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/words/add/'
