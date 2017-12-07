@@ -62,6 +62,15 @@ $("#id_clear_button").click(function (){
 });
 
 
+$("#id_exchange_button").click(function (){
+    var question = $("#id_question").val();
+    var answer = $("#id_answer").val();
+    $("#id_question").val(answer);
+    $("#id_answer").val(question);
+    $("#id_question").focus();
+});
+
+
 $(".delete_word_btn").click(function() {
     parent_tag = $(this).parent();
 
