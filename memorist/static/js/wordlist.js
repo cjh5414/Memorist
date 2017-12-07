@@ -4,6 +4,10 @@ $(function () {
     });
 });
 
+$(document).ready(function() {
+    $("#id_question").focus();
+});
+
 function getCookie(c_name)
 {
     if (document.cookie.length > 0)
@@ -40,6 +44,7 @@ $("#id_translate_button").click(function () {
                         }));
                     }
                 }
+                $("#id_question").focus();
             },
             error: function (request, status, error) {
                 alert("API 요청 실패");
