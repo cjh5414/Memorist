@@ -5,13 +5,14 @@ import urllib.request
 from django.views import View
 from django.shortcuts import render
 from django.views.generic import *
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from wordlist.forms import WordAddForm
 from wordlist.models import Word
 
 
-class WordAddView(FormView):
+class WordAddView(LoginRequiredMixin, FormView):
     form_class = WordAddForm
     template_name = 'add_word.html'
     success_url = '/words/add/'
@@ -22,7 +23,7 @@ class WordAddView(FormView):
         return super(WordAddView, self).form_valid(form)
 
 
-class WordListView(ListView):
+class WordListView(LoginRequiredMixin, ListView):
     template_name = 'word_list.html'
     model = Word
 
@@ -32,7 +33,7 @@ class WordListView(ListView):
         return queryset
 
 
-class DeletedWordListView(ListView):
+class DeletedWordListView(LoginRequiredMixin, ListView):
     template_name = 'deleted_word_list.html'
     model = Word
 
@@ -42,7 +43,7 @@ class DeletedWordListView(ListView):
         return queryset
 
 
-class WordDeleteView(View):
+class WordDeleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
         word.is_deleted = True
@@ -50,7 +51,7 @@ class WordDeleteView(View):
         return JsonResponse({'result': 'True'})
 
 
-class WordRestore(View):
+class WordRestore(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         word = Word.objects.get(id=self.kwargs['pk'])
         word.is_deleted = False
@@ -58,7 +59,7 @@ class WordRestore(View):
         return JsonResponse({'result': 'True'})
 
 
-class WordTranslate(View):
+class WordTranslate(LoginRequiredMixin, View):
     def post(self, request):
         question = request.POST['question']
         lang = WordTranslate.what_is_language(question)
@@ -164,7 +165,7 @@ class WordTranslate(View):
         return result_words
 
 
-class WordStudy(View):
+class WordStudy(LoginRequiredMixin, View):
     template_name = 'study_word.html'
 
     def get(self, request):
@@ -173,7 +174,7 @@ class WordStudy(View):
         return render(request, self.template_name, {'word': word})
 
 
-class WordStudyNext(View):
+class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         word = Word.alive_objects.all().order_by('?').first()
 

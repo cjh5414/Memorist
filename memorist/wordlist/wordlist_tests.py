@@ -4,9 +4,12 @@ import json
 from wordlist.models import *
 from wordlist.views import WordTranslate
 
+from account.account_tests import testuser_login
+
 
 @pytest.mark.django_db
 def test_add_word(client):
+    testuser_login(client)
     response = client.get('/words/add/')
 
     assert 'Question' in response.content.decode('utf-8')
@@ -24,6 +27,7 @@ def test_add_word(client):
 
 @pytest.mark.django_db
 def test_view_words(client):
+    testuser_login(client)
     response = client.get('/words/')
 
     words = Word.objects.all()
@@ -35,6 +39,7 @@ def test_view_words(client):
 
 @pytest.mark.django_db
 def test_delete_word(client):
+    testuser_login(client)
     word = Word.objects.get(question='사과')
 
     word_list_response = client.get('/words/')
@@ -52,6 +57,7 @@ def test_delete_word(client):
 
 @pytest.mark.django_db
 def test_translate_api_ko_to_en(client):
+    testuser_login(client)
     response = client.post('/translate/', {
         'question': '번역',
     })
@@ -74,6 +80,7 @@ def test_translate_api_ko_to_en(client):
 
 @pytest.mark.django_db
 def test_translate_api_en_to_ko(client):
+    testuser_login(client)
     response = client.post('/translate/', {
         'question': 'nurse',
     })
@@ -96,6 +103,7 @@ def test_translate_api_en_to_ko(client):
 
 @pytest.mark.django_db
 def test_basic_study_view(client):
+    testuser_login(client)
     response = client.get('/study/')
 
     assert '다음' in response.content.decode('utf-8')
@@ -105,6 +113,7 @@ def test_basic_study_view(client):
 
 @pytest.mark.django_db
 def test_study_api(client):
+    testuser_login(client)
     response = client.post('/study/next/')
 
     response_data = json.loads(response.content)
@@ -116,6 +125,7 @@ def test_study_api(client):
 
 @pytest.mark.django_db
 def test_confirm_deleted_word(client):
+    testuser_login(client)
     word = Word.objects.get(question='사과')
 
     response = client.get('/words/deleted/')
@@ -129,6 +139,7 @@ def test_confirm_deleted_word(client):
 
 @pytest.mark.django_db
 def test_restore_deleted_word(client):
+    testuser_login(client)
     word = Word.objects.get(question='사과')
 
     client.post('/words/%d/delete/' % word.id)
@@ -144,6 +155,7 @@ def test_restore_deleted_word(client):
 
 @pytest.mark.django_db
 def test_refine_words(client):
+    testuser_login(client)
     words = ['apple', 'apple', 'Cup', 'cup', 'shorts', 'Hat']
 
     result_words = WordTranslate.refine_words(words)
