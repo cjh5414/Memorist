@@ -6,7 +6,8 @@ from django.contrib.auth.hashers import make_password, is_password_usable
 
 
 class User(AbstractUser):
-    name = models.CharField(max_length=30)
+    name = models.CharField(null=False, max_length=30)
+    email = models.EmailField(null=False, max_length=254)
 
 
 @receiver(pre_save, sender=User)

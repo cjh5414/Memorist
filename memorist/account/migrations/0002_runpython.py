@@ -7,7 +7,7 @@ def forwards_func(apps, schema_editor):
     User = apps.get_model("account", "User")
     db_alias = schema_editor.connection.alias
     User.objects.using(db_alias).bulk_create([
-        User(username='test', password=make_password('test1234!'))
+        User(username='test', password=make_password('test1234!'), name='testname', email='cjh5414@gmail.com')
     ])
 
 
