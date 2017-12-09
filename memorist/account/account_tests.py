@@ -28,3 +28,18 @@ def test_have_to_login_before_do_everything(client):
 
     assert response.status_code == 200
 
+
+@pytest.mark.django_db
+def test_have_to_login_if_call_api(client):
+    response = client.post('/translate/', {
+        'question': '번역',
+    })
+    assert response.status_code == 302
+    assert response.url == '/login/?next=/translate/'
+
+    testuser_login(client)
+    response = client.post('/translate/', {
+        'question': '번역',
+    })
+
+    assert response.status_code == 200
