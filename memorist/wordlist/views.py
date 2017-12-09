@@ -27,7 +27,7 @@ class WordListView(ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.alive_objects.all()
+        queryset = Word.alive_objects.order_by('-created_time')
 
         return queryset
 
@@ -37,7 +37,7 @@ class DeletedWordListView(ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.objects.filter(is_deleted=True)
+        queryset = Word.objects.filter(is_deleted=True).order_by('-modified_time')
 
         return queryset
 
