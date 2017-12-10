@@ -2,6 +2,8 @@ import pytest
 import json
 
 from wordlist.models import *
+from account.models import User
+
 from wordlist.views import WordTranslate
 
 from account.account_tests import testuser_login
@@ -30,11 +32,27 @@ def test_view_words(client):
     testuser_login(client)
     response = client.get('/words/')
 
-    words = Word.objects.all()
+    owner = User.objects.get(username='test')
+    words = Word.alive_objects.filter(user=owner)
 
     for word in words:
         assert word.question in response.content.decode('utf-8')
         assert word.answer in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_show_only_own_words(client):
+    testuser_login(client)
+    response = client.get('/words/')
+
+    owner = User.objects.get(username='test')
+    another = User.objects.get(username='test2')
+
+    for word in Word.alive_objects.filter(user=owner):
+        assert word.question in response.content.decode('utf-8')
+
+    for word in Word.alive_objects.filter(user=another):
+        assert word.question not in response.content.decode('utf-8')
 
 
 @pytest.mark.django_db

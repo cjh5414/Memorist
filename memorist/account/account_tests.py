@@ -43,3 +43,5 @@ def test_have_to_login_if_call_api(client):
     })
 
     assert response.status_code == 200
+
+

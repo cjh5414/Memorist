@@ -28,7 +28,7 @@ class WordListView(LoginRequiredMixin, ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.alive_objects.all()
+        queryset = Word.alive_objects.filter(user=self.request.user)
 
         return queryset
 
