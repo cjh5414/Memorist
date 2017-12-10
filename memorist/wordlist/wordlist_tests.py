@@ -156,6 +156,25 @@ def test_confirm_deleted_word(client):
 
 
 @pytest.mark.django_db
+def test_show_only_own_deleted_words(client):
+    testuser_login(client)
+
+    word = Word.objects.get(question='사과')
+    client.post('/words/%d/delete/' % word.id)
+
+    response = client.get('/words/deleted/')
+
+    owner = User.objects.get(username='test')
+    another = User.objects.get(username='test2')
+
+    for word in Word.objects.filter(user=owner, is_deleted=True):
+        assert word.question in response.content.decode('utf-8')
+
+    for word in Word.objects.filter(user=another, is_deleted=True):
+        assert word.question not in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
 def test_restore_deleted_word(client):
     testuser_login(client)
     word = Word.objects.get(question='사과')

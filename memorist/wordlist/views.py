@@ -38,7 +38,7 @@ class DeletedWordListView(LoginRequiredMixin, ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.objects.filter(is_deleted=True)
+        queryset = Word.objects.filter(user=self.request.user, is_deleted=True)
 
         return queryset
 

@@ -9,7 +9,8 @@ def forwards_func(apps, schema_editor):
     Word.objects.using(db_alias).bulk_create([
         Word(question='책', answer='book', user_id=2),
         Word(question='book', answer='책', user_id=2),
-        Word(question='컵', answer='cup', user_id=2),
+        Word(question='컵', answer='cup', user_id=2, is_deleted=True),
+        Word(question='안경', answer='glasses', user_id=2, is_deleted=True),
     ])
 
 
