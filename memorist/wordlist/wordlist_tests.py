@@ -142,6 +142,31 @@ def test_study_api(client):
 
 
 @pytest.mark.django_db
+def test_study_view_from_only_own_word_list(client):
+    testuser_login(client)
+
+    another = User.objects.get(username='test2')
+    words = Word.alive_objects.filter(user=another)
+    for i in range(20):
+        for word in words:
+            response = client.get('/study/')
+            assert word.question not in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_study_api_from_only_own_word_list(client):
+    testuser_login(client)
+
+    another = User.objects.get(username='test2')
+    words = Word.alive_objects.filter(user=another)
+    for i in range(20):
+        for word in words:
+            response = client.post('/study/next/')
+            response_data = json.loads(response.content)
+            assert word.question != response_data['answer']
+
+
+@pytest.mark.django_db
 def test_confirm_deleted_word(client):
     testuser_login(client)
     word = Word.objects.get(question='사과')

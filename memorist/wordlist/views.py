@@ -169,14 +169,14 @@ class WordStudy(LoginRequiredMixin, View):
     template_name = 'study_word.html'
 
     def get(self, request):
-        word = Word.alive_objects.all().order_by('?').first()
+        word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
         return render(request, self.template_name, {'word': word})
 
 
 class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        word = Word.alive_objects.all().order_by('?').first()
+        word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
         return JsonResponse({
             'question': word.question,
