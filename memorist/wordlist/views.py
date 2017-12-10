@@ -18,7 +18,9 @@ class WordAddView(LoginRequiredMixin, FormView):
     success_url = '/words/add/'
 
     def form_valid(self, form):
-        form.save()
+        word = form.save(commit=False)
+        word.user = self.request.user
+        word.save()
 
         return super(WordAddView, self).form_valid(form)
 

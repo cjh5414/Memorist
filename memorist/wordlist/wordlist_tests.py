@@ -11,7 +11,7 @@ from account.account_tests import testuser_login
 
 @pytest.mark.django_db
 def test_add_word(client):
-    testuser_login(client)
+    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
     response = client.get('/words/add/')
 
     assert 'Question' in response.content.decode('utf-8')
@@ -25,6 +25,7 @@ def test_add_word(client):
     word = Word.objects.get(question='노트북')
 
     assert word.answer == 'laptop'
+    assert word.user.username == 'test2'
 
 
 @pytest.mark.django_db
