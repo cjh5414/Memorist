@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password, is_password_usable
 
 
 class User(AbstractUser):
+    DEFAULT_PK = 1
     name = models.CharField(null=False, max_length=30)
     email = models.EmailField(null=False, max_length=254)
 
