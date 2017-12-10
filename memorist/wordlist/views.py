@@ -28,7 +28,7 @@ class WordListView(LoginRequiredMixin, ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.alive_objects.filter(user=self.request.user)
+        queryset = Word.alive_objects.filter(user=self.request.user).order_by('-created_time')
 
         return queryset
 
@@ -38,7 +38,7 @@ class DeletedWordListView(LoginRequiredMixin, ListView):
     model = Word
 
     def get_queryset(self):
-        queryset = Word.objects.filter(user=self.request.user, is_deleted=True)
+        queryset = Word.objects.filter(user=self.request.user, is_deleted=True).order_by('-modified_time')
 
         return queryset
 
