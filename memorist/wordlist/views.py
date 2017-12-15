@@ -181,6 +181,7 @@ class WordStudyNext(LoginRequiredMixin, View):
         word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
         return JsonResponse({
+            'id': word.id,
             'question': word.question,
             'answer': word.answer
         })

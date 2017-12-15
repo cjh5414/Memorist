@@ -140,6 +140,7 @@ def test_study_api(client):
     assert response.status_code == 200
     word = Word.objects.get(question=response_data['question'])
     assert word.answer == response_data['answer']
+    assert word.id == response_data['id']
 
 
 @pytest.mark.django_db
