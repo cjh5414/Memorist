@@ -7,6 +7,7 @@ $("#id_study_next_btn").click(function () {
         type: "POST",
         url: "/study/next/",
         success: function (response) {
+            $("#id_study_remove_btn").data("id", response.id);
             $("#id_study_question_block").text(response.question);
             $("#id_study_answer_block").text(response.answer);
             $("#id_study_answer_block").hide();
