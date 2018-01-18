@@ -67,6 +67,7 @@ target/
 # ignore dev/files
 dev/files
 staticfiles
+media
 
 # ignore bower components
 bower_components/
@@ -79,3 +80,5 @@ docs/_build
 build
 dist
 Contact GitHub API Training Shop Blog About
+
+

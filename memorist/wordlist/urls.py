@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
-app_name = 'rental'
+app_name = 'wordlist'
 
 urlpatterns = [
     url(r'^words/$', views.WordListView.as_view(), name='word_list'),
@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^translate/$', views.WordTranslate.as_view(), name='word_translate'),
     url(r'^study/$', views.WordStudy.as_view(), name='word_study'),
     url(r'^study/next/$', views.WordStudyNext.as_view(), name='word_study_next'),
+    url(r'^pronounce/$', views.Pronounce.as_view(), name='pronounce'),
 ]
