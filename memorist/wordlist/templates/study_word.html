@@ -3,7 +3,10 @@
 {% block title %}Study word{% endblock %}
 
 {% block body %}
-    <p>Question : <span id="id_study_question_block">{{ word.question }}</span></p>
+    <p>
+        Question : <span id="id_study_question_block">{{ word.question }}</span>
+        <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block" data-mediaurl="{{ MEDIA_URL }}">P</button>
+    </p>
     <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
 
     {% load bootstrap3 %}
