@@ -77,7 +77,8 @@ $("#id_exchange_button").click(function (){
 
 
 $("#id_pronounce_button").click(function (){
-    var question = $("#id_question").val();
+    questionid = $(this).data("questionid");
+    var question = $("#" + questionid).text();
     media_url = $(this).data("mediaurl");
 
     if(question!=="") {
