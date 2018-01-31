@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'memorist.wsgi.application'
 #     }
 # }
 
-MYSQL_NAME = os.environ['MEMORIST_MYSQL_NAME']
-MYSQL_USER = os.environ['MEMORIST_MYSQL_USER']
-MYSQL_PASSWORD = os.environ['MEMORIST_MYSQL_PASSWORD']
+MYSQL_NAME = os.getenv('MEMORIST_MYSQL_NAME', '')
+MYSQL_USER = os.getenv('MEMORIST_MYSQL_USER', '')
+MYSQL_PASSWORD = os.getenv('MEMORIST_MYSQL_PASSWORD', '')
 
 DATABASES = {
     'default': {
