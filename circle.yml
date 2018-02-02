@@ -1,0 +1,16 @@
+machine:
+  pre:
+    - cd /opt/circleci/.pyenv; git pull
+  python:
+    version: 3.6.0
+  services:
+    - mysql
+
+dependencies:
+  pre:
+    - pip install -r ./requirements.txt
+      
+test:
+  override:
+    - pytest ./memorist
+
