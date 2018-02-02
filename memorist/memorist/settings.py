@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["MEMORIST_SECRET_KEY"]
+
+SECRET_KEY = os.getenv('MEMORIST_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -88,9 +89,9 @@ WSGI_APPLICATION = 'memorist.wsgi.application'
 #     }
 # }
 
-MYSQL_NAME = os.environ['MEMORIST_MYSQL_NAME']
-MYSQL_USER = os.environ['MEMORIST_MYSQL_USER']
-MYSQL_PASSWORD = os.environ['MEMORIST_MYSQL_PASSWORD']
+MYSQL_NAME = os.getenv('MEMORIST_MYSQL_NAME', '')
+MYSQL_USER = os.getenv('MEMORIST_MYSQL_USER', '')
+MYSQL_PASSWORD = os.getenv('MEMORIST_MYSQL_PASSWORD', '')
 
 DATABASES = {
     'default': {
@@ -102,7 +103,7 @@ DATABASES = {
         'USER': MYSQL_USER,
         'PASSWORD': MYSQL_PASSWORD,
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '3306',
     }
 }
 
