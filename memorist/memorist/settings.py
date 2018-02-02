@@ -103,7 +103,7 @@ DATABASES = {
         'USER': MYSQL_USER,
         'PASSWORD': MYSQL_PASSWORD,
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '3306',
     }
 }
 
