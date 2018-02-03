@@ -14,3 +14,9 @@ test:
   override:
     - pytest ./memorist
 
+deployment:
+  production:
+    branch: master
+    commands:
+      - ./scripts/deploy.sh
+
