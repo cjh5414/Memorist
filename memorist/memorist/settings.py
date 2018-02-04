@@ -25,13 +25,13 @@ SECRET_KEY = os.getenv('MEMORIST_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+
 DEBUG = True
 ALLOWED_HOSTS = []
 
 if os.getenv('MEMORIST_ENVIRONMENT') == "production":
     DEBUG = False
     ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -154,6 +154,10 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if DEBUG is True:
+    if not os.path.exists(MEDIA_ROOT):
+        os.makedirs(MEDIA_ROOT)
+
 
 # BOOTSTRAP3
 BOOTSTRAP3 = {
