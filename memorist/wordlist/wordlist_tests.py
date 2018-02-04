@@ -1,5 +1,6 @@
-import pytest
-import json
+import pytest, json, os
+
+from django.conf import settings
 
 from wordlist.models import *
 from account.models import User
@@ -225,3 +226,22 @@ def test_refine_words(client):
     result_words = WordTranslate.refine_words(words)
 
     assert result_words == ['apple', 'cup', 'shorts', 'hat']
+
+
+@pytest.mark.django_db
+def test_prounce(client):
+    testuser_login(client)
+
+    question = 'i am a boy'
+    response = client.post('/pronounce/', {
+        'question': question,
+    })
+
+    response_data = json.loads(response.content)
+
+    assert response.status_code == 200
+
+    file_name = 'pronounce_' + question + '.mp3'
+    assert response_data['file_name'] == file_name
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+    assert os.path.isfile(file_path) is True

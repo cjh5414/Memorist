@@ -191,39 +191,43 @@ class WordStudyNext(LoginRequiredMixin, View):
 class Pronounce(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         question = request.POST['question']
-        lang = WordTranslate.what_is_language(question)
 
-        client_id = os.getenv('PAPAGO_API_CLIENT_ID')
-        client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
-        if client_id is None or client_secret is None:
-            print("Error : Missed Environment Variable")
-            return
+        file_name = 'pronounce_' + question[:10] + '.mp3'
+        file_path = os.path.join(settings.MEDIA_ROOT, file_name)
 
-        PAPAGO_URL = "https://openapi.naver.com/v1/voice/tts.bin"
-        text = urllib.parse.quote(question)
+        if not os.path.isfile(file_path):
+            lang = WordTranslate.what_is_language(question)
 
-        if lang == 'en':
-            data = "speaker=clara&speed=0&text=" + text
-        elif lang == 'ko':
-            data = "speaker=mijin&speed=0&text=" + text
+            client_id = os.getenv('PAPAGO_API_CLIENT_ID')
+            client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
+            if client_id is None or client_secret is None:
+                print("Error : Missed Environment Variable")
+                return
 
-        else:
-            return
+            PAPAGO_URL = "https://openapi.naver.com/v1/voice/tts.bin"
+            text = urllib.parse.quote(question)
 
-        request = urllib.request.Request(PAPAGO_URL)
-        request.add_header("X-Naver-Client-Id", client_id)
-        request.add_header("X-Naver-Client-Secret", client_secret)
-        response = urllib.request.urlopen(request, data=data.encode('utf-8'))
-        rescode = response.getcode()
-        if rescode == 200:
-            response_body = response.read()
-            with open(os.path.join(settings.MEDIA_ROOT, 'pronounce.mp3'), 'wb') as f:
-                f.write(response_body)
-            return JsonResponse({
-                'file_name': 'pronounce.mp3',
-            })
-        else:
-            print("Error Code:" + rescode)
-            return False
+            if lang == 'en':
+                data = "speaker=clara&speed=0&text=" + text
+            elif lang == 'ko':
+                data = "speaker=mijin&speed=0&text=" + text
 
+            else:
+                return
 
+            request = urllib.request.Request(PAPAGO_URL)
+            request.add_header("X-Naver-Client-Id", client_id)
+            request.add_header("X-Naver-Client-Secret", client_secret)
+            response = urllib.request.urlopen(request, data=data.encode('utf-8'))
+            rescode = response.getcode()
+
+            if rescode == 200:
+                with open(file_path, 'wb') as f:
+                    f.write(response.read())
+            else:
+                print("Error Code:" + rescode)
+                return False
+
+        return JsonResponse({
+            'file_name': file_name,
+        })
