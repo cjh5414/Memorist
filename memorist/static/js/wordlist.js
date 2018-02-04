@@ -91,6 +91,7 @@ $("#id_pronounce_button").click(function (){
             data: {'question': question},
             success: function (response) {
                 var audio = new Audio(media_url + response.file_name);
+                audio.load();
                 audio.play();
             },
             error: function (request, status, error) {
