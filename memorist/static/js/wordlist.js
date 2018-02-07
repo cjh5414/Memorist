@@ -93,6 +93,7 @@ $("#id_pronounce_button").click(function (){
                 var audio = new Audio(media_url + response.file_name);
                 audio.load();
                 audio.play();
+                audio.pause();
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
