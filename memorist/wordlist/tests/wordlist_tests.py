@@ -32,6 +32,27 @@ def test_add_word(client):
 
 
 @pytest.mark.django_db
+def test_distinguish_question_type_when_adding(client):
+    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
+
+    client.post('/words/add/', {
+        'question': '단어',
+        'answer': 'word',
+    })
+
+    word = Word.objects.get(question='단어', answer='word')
+    assert word.question_type == 'W'
+
+    client.post('/words/add/', {
+        'question': '이것은 문장입니다',
+        'answer': 'This is a sentence.',
+    })
+
+    word = Word.objects.get(question='이것은 문장입니다', answer='This is a sentence.')
+    assert word.question_type == 'S'
+
+
+@pytest.mark.django_db
 def test_view_words(client):
     testuser_login(client)
     response = client.get('/words/')
