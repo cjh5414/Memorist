@@ -53,3 +53,21 @@ def test_study_api_from_only_own_word_list(client):
             response_data = json.loads(response.content)
             assert word.question != response_data['answer']
 
+
+@pytest.mark.django_db
+def test_study_only_words(client):
+    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
+
+    def is_sentence(question):
+        words = question.split(' ')
+        if len(words) > 1:
+            return True
+        else:
+            return False
+
+    for i in range(20):
+        response = client.post('/study/next/', {
+            'question_type': 'words'
+        })
+        response_data = json.loads(response.content)
+        assert is_sentence(response_data['question']) is False

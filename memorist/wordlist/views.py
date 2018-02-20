@@ -179,6 +179,7 @@ class WordStudy(LoginRequiredMixin, View):
 
 class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
+        question_type = request.POST.get('question_type')
         word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
         return JsonResponse({
