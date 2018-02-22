@@ -11,9 +11,9 @@ def forwards_func(apps, schema_editor):
         Word(question='book', answer='책', user_id=2),
         Word(question='컵', answer='cup', user_id=2, is_deleted=True),
         Word(question='안경', answer='glasses', user_id=2, is_deleted=True),
-        Word(question='나는 학생입니다', answer='I am a student.', user_id=2),
-        Word(question='im not going to go school tomorrow.', answer='나는 내일 학교에 가지 않을 것이다.', user_id=2),
-        Word(question='오늘은 수요일이야', answer='Today is Wednesday.', user_id=2, is_deleted=True),
+        Word(question='나는 학생입니다', answer='I am a student.', user_id=2, question_type='S'),
+        Word(question='im not going to go school tomorrow.', answer='나는 내일 학교에 가지 않을 것이다.', user_id=2, question_type='S'),
+        Word(question='오늘은 수요일이야', answer='Today is Wednesday.', user_id=2, is_deleted=True, question_type='S'),
     ])
 
 
@@ -23,7 +23,7 @@ def reverse_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('wordlist', '0005_word_user'),
+        ('wordlist', '0006_word_question_type'),
     ]
 
     operations = [
