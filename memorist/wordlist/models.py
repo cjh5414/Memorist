@@ -17,3 +17,7 @@ class Word(TimeStampedModel):
 
     objects = models.Manager()
     alive_objects = AliveManager()
+
+    def __str__(self):
+        return '%s %s %s %s %s'\
+               % (self.question, self.answer, self.question_type, self.is_deleted, self.user.username)

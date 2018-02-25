@@ -186,17 +186,24 @@ class WordStudy(LoginRequiredMixin, View):
 
 class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        question_type = request.POST.get('question_type')
+        question_type = request.POST.get('questionType')
         if question_type == "words":
             word = Word.alive_objects.filter(user=request.user, question_type='W').order_by('?').first()
+        elif question_type == "sentences":
+            word = Word.alive_objects.filter(user=request.user, question_type='S').order_by('?').first()
         else:
             word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
-        return JsonResponse({
-            'id': word.id,
-            'question': word.question,
-            'answer': word.answer
-        })
+        if word is None:
+            return JsonResponse({
+                'errorType': 'NotExist'
+            })
+        else:
+            return JsonResponse({
+                'id': word.id,
+                'question': word.question,
+                'answer': word.answer,
+            })
 
 
 class Pronounce(LoginRequiredMixin, View):

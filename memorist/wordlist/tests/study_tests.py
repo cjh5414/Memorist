@@ -67,7 +67,47 @@ def test_study_only_words(client):
 
     for i in range(20):
         response = client.post('/study/next/', {
-            'question_type': 'words'
+            'questionType': 'words'
         })
         response_data = json.loads(response.content)
         assert is_sentence(response_data['question']) is False
+
+
+@pytest.mark.django_db
+def test_study_only_sentences(client):
+    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
+
+    def is_sentence(question):
+        words = question.split(' ')
+        if len(words) > 1:
+            return True
+        else:
+            return False
+
+    for i in range(20):
+        response = client.post('/study/next/', {
+            'questionType': 'sentences'
+        })
+        response_data = json.loads(response.content)
+        assert is_sentence(response_data['question']) is True
+
+
+@pytest.mark.django_db
+def test_check_error_when_there_are_only_words(client):
+    client.post('/login/', {'username': 'test', 'password': 'test1234!'})
+
+    response = client.post('/study/next/', {
+        'questionType': 'sentences'
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['errorType'] == 'NotExist'
+
+    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
+
+    response = client.post('/study/next/', {
+        'questionType': 'sentences'
+    })
+
+    response_data = json.loads(response.content)
+    assert 'errorType' not in response_data
