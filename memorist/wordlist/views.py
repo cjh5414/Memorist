@@ -187,9 +187,9 @@ class WordStudy(LoginRequiredMixin, View):
 class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         question_type = request.POST.get('questionType')
-        if question_type == "words":
+        if question_type == "Words":
             word = Word.alive_objects.filter(user=request.user, question_type='W').order_by('?').first()
-        elif question_type == "sentences":
+        elif question_type == "Sentences":
             word = Word.alive_objects.filter(user=request.user, question_type='S').order_by('?').first()
         else:
             word = Word.alive_objects.filter(user=request.user).order_by('?').first()

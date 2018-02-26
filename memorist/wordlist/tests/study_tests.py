@@ -67,7 +67,7 @@ def test_study_only_words(client):
 
     for i in range(20):
         response = client.post('/study/next/', {
-            'questionType': 'words'
+            'questionType': 'Words'
         })
         response_data = json.loads(response.content)
         assert is_sentence(response_data['question']) is False
@@ -86,7 +86,7 @@ def test_study_only_sentences(client):
 
     for i in range(20):
         response = client.post('/study/next/', {
-            'questionType': 'sentences'
+            'questionType': 'Sentences'
         })
         response_data = json.loads(response.content)
         assert is_sentence(response_data['question']) is True
@@ -97,7 +97,7 @@ def test_check_error_when_there_are_only_words(client):
     client.post('/login/', {'username': 'test', 'password': 'test1234!'})
 
     response = client.post('/study/next/', {
-        'questionType': 'sentences'
+        'questionType': 'Sentences'
     })
 
     response_data = json.loads(response.content)
@@ -106,7 +106,7 @@ def test_check_error_when_there_are_only_words(client):
     client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
 
     response = client.post('/study/next/', {
-        'questionType': 'sentences'
+        'questionType': 'Sentences'
     })
 
     response_data = json.loads(response.content)
