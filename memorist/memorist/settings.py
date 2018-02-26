@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'raven.contrib.django.raven_compat',
+    # 'raven.contrib.django.raven_compat',
     'bootstrap3',
     'wordlist',
     'account'
@@ -172,13 +172,13 @@ AUTH_USER_MODEL = 'account.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/words/add/'
 
-
-import os
-import raven
-
-RAVEN_CONFIG = {
-    'dsn': 'https://1be9549feabf461f8632236f6bd6172f:ea89c7e21d2a45809b8104fb7e123a2c@sentry.io/290681',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
-}
+#
+# import os
+# import raven
+#
+# RAVEN_CONFIG = {
+#     'dsn': 'https://1be9549feabf461f8632236f6bd6172f:ea89c7e21d2a45809b8104fb7e123a2c@sentry.io/290681',
+#     # If you are using git, you can also automatically configure the
+#     # release based on the git info.
+#     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+# }
