@@ -3,10 +3,18 @@
 {% block title %}Study word{% endblock %}
 
 {% block body %}
-    <p>
+    <div id="id_study_question_types">
+        <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
+        <label class="radio-inline"><input type="radio" name="question_type">Words</label>
+        <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+    </div>
+    <hr>
+    <div>
         Question : <span id="id_study_question_block">{{ word.question }}</span>
-        <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block" data-mediaurl="{{ MEDIA_URL }}">P</button>
-    </p>
+        <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block"
+                data-mediaurl="{{ MEDIA_URL }}">P
+        </button>
+    </div>
     <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
 
     {% load bootstrap3 %}

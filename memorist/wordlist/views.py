@@ -21,6 +21,13 @@ class WordAddView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         word = form.save(commit=False)
         word.user = self.request.user
+
+        words = word.question.split(' ')
+        if len(words) > 1:
+            word.question_type = 'S'
+        else:
+            word.question_type = 'W'
+
         word.save()
 
         return super(WordAddView, self).form_valid(form)
@@ -179,13 +186,24 @@ class WordStudy(LoginRequiredMixin, View):
 
 class WordStudyNext(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        word = Word.alive_objects.filter(user=request.user).order_by('?').first()
+        question_type = request.POST.get('questionType')
+        if question_type == "Words":
+            word = Word.alive_objects.filter(user=request.user, question_type='W').order_by('?').first()
+        elif question_type == "Sentences":
+            word = Word.alive_objects.filter(user=request.user, question_type='S').order_by('?').first()
+        else:
+            word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
-        return JsonResponse({
-            'id': word.id,
-            'question': word.question,
-            'answer': word.answer
-        })
+        if word is None:
+            return JsonResponse({
+                'errorType': 'NotExist'
+            })
+        else:
+            return JsonResponse({
+                'id': word.id,
+                'question': word.question,
+                'answer': word.answer,
+            })
 
 
 class Pronounce(LoginRequiredMixin, View):
