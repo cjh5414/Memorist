@@ -32,6 +32,29 @@ def test_add_word(client):
 
 
 @pytest.mark.django_db
+def test_edit_word(client):
+    client.post('/login/', {'username': 'test', 'password': 'test1234!'})
+
+    client.post('/words/add/', {
+        'question': 'sarcastic',
+        'answer': '비고는',
+    })
+
+    word = Word.objects.get(question='sarcastic', answer='비고는')
+
+    response = client.post('/words/%d/edit' % word.id, {
+        'question': 'sarcastic',
+        'answer': '비꼬는',
+    })
+
+    assert response.status_code == 200
+
+    edited_word = Word.objects.get(id=word.id)
+
+    assert edited_word.answer == '비꼬는'
+
+
+@pytest.mark.django_db
 def test_distinguish_question_type_when_adding(client):
     client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
 
