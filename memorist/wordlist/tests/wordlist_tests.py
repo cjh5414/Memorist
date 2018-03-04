@@ -42,7 +42,7 @@ def test_edit_word(client):
 
     word = Word.objects.get(question='sarcastic', answer='비고는')
 
-    response = client.post('/words/%d/edit' % word.id, {
+    response = client.post('/words/%d/edit/' % word.id, {
         'question': 'sarcastic',
         'answer': '비꼬는',
     })
