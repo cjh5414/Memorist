@@ -31,3 +31,34 @@ $(document).mouseup(function (e){
         }
     }
 });
+
+$(".edit_word_btn").click(function() {
+    original_question = lastClickedWordTbody.find(".word_list_question").text();
+    original_answer = lastClickedWordTbody.find(".word_list_answer").text();
+    edited_question = lastClickedWordTbody.find(".word_list_input_question").val();
+    edited_answer = lastClickedWordTbody.find(".word_list_input_answer").val();
+
+    if(original_question!==edited_question || original_answer!==edited_answer) {
+        $.ajax({
+            type: "POST",
+            url: "/words/" + $(this).data("id") + "/edit/",
+            data: {
+                'question': edited_question,
+                'answer': edited_answer
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.result === "True") {
+                    lastClickedWordTbody.find(".word_list_question").text(edited_question);
+                    lastClickedWordTbody.find(".word_list_answer").text(edited_answer);
+                    lastClickedWordTbody.find(".word_list_row").show();
+                    lastClickedWordTbody.find(".word_list_input_row").hide();
+                }
+            },
+            error: function (request, status, error) {
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                alert("API 요청 실패");
+            }
+        });
+    }
+});
