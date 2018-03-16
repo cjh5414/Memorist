@@ -19,6 +19,11 @@ $(".word_list_question, .word_list_answer").click(function() {
     input_tr.find(".word_list_input_question").val(question);
     input_tr.find(".word_list_input_answer").val(answer);
 
+    if(this.className==="word_list_question")
+        input_tr.find(".word_list_input_question").focus();
+    else
+        input_tr.find(".word_list_input_answer").focus();
+
     lastClickedWordTbody = tbody;
 });
 
