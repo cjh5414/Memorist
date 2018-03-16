@@ -69,6 +69,23 @@ class WordRestore(LoginRequiredMixin, View):
         return JsonResponse({'result': 'True'})
 
 
+class WordEdit(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        word = Word.objects.get(id=self.kwargs['pk'])
+        word.question = self.request.POST['question']
+        word.answer = self.request.POST['answer']
+
+        words = word.question.split(' ')
+        if len(words) > 1:
+            word.question_type = 'S'
+        else:
+            word.question_type = 'W'
+
+        print(word.answer)
+        word.save()
+        return JsonResponse({'result': 'True'})
+
+
 class WordTranslate(LoginRequiredMixin, View):
     def post(self, request):
         question = request.POST['question']
