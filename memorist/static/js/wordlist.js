@@ -1,141 +1,69 @@
-$(function () {
-    $.ajaxSetup({
-        headers: { "X-CSRFToken": getCookie("csrftoken") }
-    });
-});
+var lastClickedWordTbody;
 
 $(document).ready(function() {
     $("#id_question").focus();
 });
 
-function getCookie(c_name)
-{
-    if (document.cookie.length > 0)
-    {
-        c_start = document.cookie.indexOf(c_name + "=");
-        if (c_start != -1)
-        {
-            c_start = c_start + c_name.length + 1;
-            c_end = document.cookie.indexOf(";", c_start);
-            if (c_end == -1) c_end = document.cookie.length;
-            return unescape(document.cookie.substring(c_start,c_end));
+$(".word_list_question, .word_list_answer").click(function() {
+    tr = $(this).parent();
+    tbody = tr.parent();
+
+    question = tr.find(".word_list_question").text();
+    answer = tr.find(".word_list_answer").text();
+
+    tr.hide();
+
+    input_tr = tbody.find(".word_list_input_row");
+
+    input_tr.show();
+    input_tr.find(".word_list_input_question").val(question);
+    input_tr.find(".word_list_input_answer").val(answer);
+
+    if(this.className==="word_list_question")
+        input_tr.find(".word_list_input_question").focus();
+    else
+        input_tr.find(".word_list_input_answer").focus();
+
+    lastClickedWordTbody = tbody;
+});
+
+$(document).mouseup(function (e){
+    if(lastClickedWordTbody !== undefined) {
+        var container = lastClickedWordTbody;
+        if (container.has(e.target).length === 0) {
+            container.find(".word_list_row").show();
+            container.find(".word_list_input_row").hide();
         }
     }
-    return "";
- }
+});
 
-$("#id_translate_button").click(function () {
-    $("#id_glosbe_block").empty();
+$(".edit_word_btn").click(function() {
+    original_question = lastClickedWordTbody.find(".word_list_question").text();
+    original_answer = lastClickedWordTbody.find(".word_list_answer").text();
+    edited_question = lastClickedWordTbody.find(".word_list_input_question").val();
+    edited_answer = lastClickedWordTbody.find(".word_list_input_answer").val();
 
-    var question = $("#id_question").val();
-    if(question.length!==0) {
+    if(original_question!==edited_question || original_answer!==edited_answer) {
         $.ajax({
             type: "POST",
-            // url: "{% url 'wordlist:word_translate' %}",
-            url: "/translate/",
-            data: {'question': question},
+            url: "/words/" + $(this).data("id") + "/edit/",
+            data: {
+                'question': edited_question,
+                'answer': edited_answer
+            },
             dataType: "json",
             success: function (response) {
-                $("#id_answer").val(response.papago_translation_result);
-                if (response.glosbe_translation_result!=undefined) {
-                    for (i=0; i<response.glosbe_translation_result.length; i++) {
-                        $("#id_glosbe_block").append($('<p/>', {
-                            text: response.glosbe_translation_result[i]
-                        }));
-                    }
+                if(response.result === "True") {
+                    lastClickedWordTbody.find(".word_list_question").text(edited_question);
+                    lastClickedWordTbody.find(".word_list_answer").text(edited_answer);
+                    lastClickedWordTbody.find(".word_list_row").show();
+                    lastClickedWordTbody.find(".word_list_input_row").hide();
                 }
-                $("#id_question").focus();
             },
             error: function (request, status, error) {
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 alert("API 요청 실패");
             }
         });
     }
-});
-
-
-$("#id_naver_dic_button").click(function () {
-    var question = $("#id_question").val();
-    window.open('http://endic.naver.com/search.nhn?sLn=kr&isOnlyViewEE=N&query=' + question, '_self');
-});
-
-
-$("#id_clear_button").click(function (){
-    $("#id_question").val("");
-    $("#id_answer").val("");
-    $("#id_question").focus();
-});
-
-
-$("#id_exchange_button").click(function (){
-    var question = $("#id_question").val();
-    var answer = $("#id_answer").val();
-    $("#id_question").val(answer);
-    $("#id_answer").val(question);
-    $("#id_question").focus();
-});
-
-
-$("#id_pronounce_button").click(function (){
-    questionid = $(this).data("questionid");
-    var question = $("#" + questionid).val();
-    if(question==="") {
-        question = $("#" + questionid).text();
-    }
-    media_url = $(this).data("mediaurl");
-
-    if(question!=="") {
-        $.ajax({
-            type: "POST",
-            url: "/pronounce/",
-            data: {'question': question},
-            success: function (response) {
-                var audio = new Audio(media_url + response.file_name);
-                audio.load();
-                audio.play();
-            },
-            error: function (request, status, error) {
-                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                alert("API 요청 실패");
-            }
-        });
-    }
-});
-
-
-$(".delete_word_btn").click(function() {
-    parent_tag = $(this).parent();
-
-    $.ajax({
-        type: "POST",
-        url: "/words/" + $(this).data("id") + "/delete/",
-        success: function (response) {
-            if(response.result === "True") {
-                parent_tag.remove();
-            }
-        },
-        error: function (request, status, error) {
-            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            alert("API 요청 실패");
-        }
-    });
-});
-
-
-$(".restore_word_btn").click(function() {
-    parent_tag = $(this).parent();
-
-    $.ajax({
-        type: "POST",
-        url: "/words/" + $(this).data("id") + "/restore/",
-        success: function (response) {
-            if(response.result === "True") {
-                parent_tag.remove();
-            }
-        },
-        error: function (request, status, error) {
-            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            alert("API 요청 실패");
-        }
-    });
 });
