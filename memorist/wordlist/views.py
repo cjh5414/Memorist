@@ -21,13 +21,6 @@ class WordAddView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         word = form.save(commit=False)
         word.user = self.request.user
-
-        words = word.question.split(' ')
-        if len(words) > 1:
-            word.question_type = 'S'
-        else:
-            word.question_type = 'W'
-
         word.save()
 
         return super(WordAddView, self).form_valid(form)
@@ -74,14 +67,6 @@ class WordEdit(LoginRequiredMixin, View):
         word = Word.objects.get(id=self.kwargs['pk'])
         word.question = self.request.POST['question']
         word.answer = self.request.POST['answer']
-
-        words = word.question.split(' ')
-        if len(words) > 1:
-            word.question_type = 'S'
-        else:
-            word.question_type = 'W'
-
-        print(word.answer)
         word.save()
         return JsonResponse({'result': 'True'})
 
