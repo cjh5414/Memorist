@@ -5,6 +5,8 @@ from wordlist.models import *
 
 from account.account_tests import testuser_login
 
+from utils.utils import is_sentence
+
 
 @pytest.mark.django_db
 def test_basic_study_view(client):
@@ -56,14 +58,7 @@ def test_study_api_from_only_own_word_list(client):
 
 @pytest.mark.django_db
 def test_study_only_words(client):
-    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
-
-    def is_sentence(question):
-        words = question.split(' ')
-        if len(words) > 1:
-            return True
-        else:
-            return False
+    testuser_login(client, 'test2')
 
     for i in range(20):
         response = client.post('/study/next/', {
@@ -75,14 +70,7 @@ def test_study_only_words(client):
 
 @pytest.mark.django_db
 def test_study_only_sentences(client):
-    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
-
-    def is_sentence(question):
-        words = question.split(' ')
-        if len(words) > 1:
-            return True
-        else:
-            return False
+    testuser_login(client, 'test2')
 
     for i in range(20):
         response = client.post('/study/next/', {
@@ -94,7 +82,7 @@ def test_study_only_sentences(client):
 
 @pytest.mark.django_db
 def test_check_error_when_there_are_only_words(client):
-    client.post('/login/', {'username': 'test', 'password': 'test1234!'})
+    testuser_login(client)
 
     response = client.post('/study/next/', {
         'questionType': 'Sentences'
@@ -103,7 +91,7 @@ def test_check_error_when_there_are_only_words(client):
     response_data = json.loads(response.content)
     assert response_data['errorType'] == 'NotExist'
 
-    client.post('/login/', {'username': 'test2', 'password': 'test1234!'})
+    testuser_login(client, 'test2')
 
     response = client.post('/study/next/', {
         'questionType': 'Sentences'

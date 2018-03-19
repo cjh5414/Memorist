@@ -2,8 +2,8 @@ import pytest
 
 
 @pytest.mark.django_db
-def testuser_login(client):
-    client.post('/login/', {'username': 'test', 'password': 'test1234!'})
+def testuser_login(client, username='test'):
+    client.post('/login/', {'username': username, 'password': 'test1234!'})
 
 
 @pytest.mark.django_db
