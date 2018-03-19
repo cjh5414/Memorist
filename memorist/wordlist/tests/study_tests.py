@@ -5,6 +5,8 @@ from wordlist.models import *
 
 from account.account_tests import testuser_login
 
+from utils.utils import is_sentence
+
 
 @pytest.mark.django_db
 def test_basic_study_view(client):
@@ -58,13 +60,6 @@ def test_study_api_from_only_own_word_list(client):
 def test_study_only_words(client):
     testuser_login(client, 'test2')
 
-    def is_sentence(question):
-        words = question.split(' ')
-        if len(words) > 1:
-            return True
-        else:
-            return False
-
     for i in range(20):
         response = client.post('/study/next/', {
             'questionType': 'Words'
@@ -76,13 +71,6 @@ def test_study_only_words(client):
 @pytest.mark.django_db
 def test_study_only_sentences(client):
     testuser_login(client, 'test2')
-
-    def is_sentence(question):
-        words = question.split(' ')
-        if len(words) > 1:
-            return True
-        else:
-            return False
 
     for i in range(20):
         response = client.post('/study/next/', {

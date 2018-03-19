@@ -12,6 +12,8 @@ from django.conf import settings
 from wordlist.forms import WordAddForm
 from wordlist.models import Word
 
+from utils.utils import is_sentence
+
 
 class WordAddView(LoginRequiredMixin, FormView):
     form_class = WordAddForm
@@ -83,7 +85,7 @@ class WordTranslate(LoginRequiredMixin, View):
 
         translated_result['papago_translation_result'] = papago_translation_result
 
-        if not WordTranslate.is_sentence(question):
+        if not is_sentence(question):
             glosbe_translation_result = WordTranslate.request_glosbe_api(question, lang)
             glosbe_translation_result = WordTranslate.refine_words(glosbe_translation_result)
             if glosbe_translation_result is False:
@@ -91,14 +93,6 @@ class WordTranslate(LoginRequiredMixin, View):
             translated_result['glosbe_translation_result'] = glosbe_translation_result
 
         return JsonResponse(translated_result)
-
-    @staticmethod
-    def is_sentence(question):
-        words = question.split(' ')
-        if len(words) > 1:
-            return True
-        else:
-            return False
 
     @staticmethod
     def what_is_language(question):
