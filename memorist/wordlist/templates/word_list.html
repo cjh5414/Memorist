@@ -5,6 +5,7 @@
 {% block body %}
     <table class="table table-hover">
         <tr>
+            <th>#</th>
             <th>Question</th>
             <th>Answer</th>
             <th></th>
@@ -12,11 +13,13 @@
         {% for word in word_list %}
             <tbody>
                 <tr class="word_list_row">
+                    <td></td>
                     <td class="word_list_question">{{ word.question }}</td>
                     <td class="word_list_answer">{{ word.answer }}</td>
                     <td class="delete_word_btn" style="color: red; cursor: pointer;" data-id="{{ word.id }}">X</td>
                 </tr>
                 <tr class="word_list_input_row" hidden>
+                    <td></td>
                     <td><input class="form-control word_list_input_question" type="text"></td>
                     <td><input class="form-control word_list_input_answer" type="text"></td>
                     <td><button class="edit_word_btn btn btn-primary" data-id="{{ word.id }}">수정</button></td>
