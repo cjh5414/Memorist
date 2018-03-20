@@ -9,3 +9,19 @@ body {
     font-family: NanumSquareRoundR, sans-serif;
     font-size: 200%;
 }
+
+table {
+    counter-reset: rowNumber;
+}
+
+table tr td:first-child {
+    counter-increment: rowNumber;
+}
+
+table tr td:first-child::before {
+    content: counter(rowNumber);
+}
+
+table td:first-child, th:first-child {
+    width: 2%;
+}

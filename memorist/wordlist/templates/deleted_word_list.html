@@ -5,12 +5,14 @@
 {% block body %}
     <table class="table table-hover">
         <tr>
+            <th>#</th>
             <th>Question</th>
             <th>Answer</th>
             <th></th>
         </tr>
         {% for word in word_list %}
             <tr>
+                <td></td>
                 <td>{{ word.question }}</td>
                 <td>{{ word.answer }}</td>
                 <td class="restore_word_btn" style="color: blue; cursor: pointer;" data-id="{{ word.id }}">복구</td>
