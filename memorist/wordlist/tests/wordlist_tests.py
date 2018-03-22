@@ -67,11 +67,11 @@ def test_distinguish_question_type_when_adding(client):
     assert word.question_type == 'W'
 
     client.post('/words/add/', {
-        'question': '이것은 문장입니다',
+        'question': '이것은 문장입니다.',
         'answer': 'This is a sentence.',
     })
 
-    word = Word.objects.get(question='이것은 문장입니다', answer='This is a sentence.')
+    word = Word.objects.get(question='이것은 문장입니다.', answer='This is a sentence.')
     assert word.question_type == 'S'
 
 
