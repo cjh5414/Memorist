@@ -2,8 +2,9 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
-from utils.models import AliveManager, TimeStampedModel
 from account.models import User
+from utils.models import AliveManager, TimeStampedModel
+from utils.utils import is_sentence
 
 
 class Word(TimeStampedModel):
@@ -27,8 +28,7 @@ class Word(TimeStampedModel):
 
 @receiver(pre_save, sender=Word)
 def update_question_type(instance, **kwargs):
-    words = instance.question.split(' ')
-    if len(words) > 1:
+    if is_sentence(instance.question):
         instance.question_type = 'S'
     else:
         instance.question_type = 'W'
