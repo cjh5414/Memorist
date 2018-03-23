@@ -202,6 +202,23 @@ class WordStudyNext(LoginRequiredMixin, View):
             })
 
 
+class MakeTest(LoginRequiredMixin, View):
+    def get(self, request):
+        num = int(request.GET['num'])
+        alive_word_list = Word.alive_objects.filter(user=request.user)
+        test_word_list = alive_word_list[len(alive_word_list)-num:]
+        json_result = []
+        for word in test_word_list:
+            json_result.append({
+                'question': word.question,
+                'answer': word.answer
+            })
+
+        return JsonResponse({
+            'testWordList': json_result
+        })
+
+
 class Pronounce(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         question = request.POST['question']

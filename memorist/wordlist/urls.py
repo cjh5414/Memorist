@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^translate/$', views.WordTranslate.as_view(), name='word_translate'),
     url(r'^study/$', views.WordStudy.as_view(), name='word_study'),
     url(r'^study/next/$', views.WordStudyNext.as_view(), name='word_study_next'),
+    url(r'^study/test/$', views.MakeTest.as_view(), name='make_test'),
     url(r'^pronounce/$', views.Pronounce.as_view(), name='pronounce'),
 ]
