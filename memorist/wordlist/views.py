@@ -214,6 +214,9 @@ class MakeTest(LoginRequiredMixin, View):
                 'answer': word.answer
             })
 
+        import random
+        random.shuffle(json_result)
+
         return JsonResponse({
             'testWordList': json_result
         })
