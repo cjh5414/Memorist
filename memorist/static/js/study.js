@@ -37,3 +37,21 @@ $("#id_study_remove_btn").click(function () {
         }
     });
 });
+
+$("#id_make_test_btn").click(function () {
+    $.ajax({
+        type: "GET",
+        url: "/study/test/",
+        data: {
+            num: 4
+        },
+        success: function (response) {
+            table = $("#id_test_table");
+            table.show();
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+});
