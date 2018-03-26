@@ -39,15 +39,35 @@ $("#id_study_remove_btn").click(function () {
 });
 
 $("#id_make_test_btn").click(function () {
+    var number = 4;
+    $("#id_test_table tr").remove();
+
+     test_table= $("#id_test_table");
+     test_table.append(
+        '<tr>' +
+            '<th>#</th>' +
+            '<th>Question</th>' +
+            '<th>Answer</th>' +
+            '<th></th>' +
+        '</tr>');
+
     $.ajax({
         type: "GET",
         url: "/study/test/",
         data: {
-            num: 4
+            num: number
         },
         success: function (response) {
-            table = $("#id_test_table");
-            table.show();
+            test_word_list = response.testWordList;
+            for (i = 0; i < number; i++) {
+                test_table.append(
+                    '<tr>' +
+                        '<td></td>' +
+                        '<td>' + test_word_list[i].question + '</td>' +
+                        '<td>' + test_word_list[i].answer + '</td>' +
+                    '</tr>')
+            }
+            test_table.show();
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
