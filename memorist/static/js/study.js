@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $("#id_check_test_answer").hide();
+});
+
 $("#id_study_confirm_btn").click(function () {
     $("#id_study_answer_block").show();
 });
@@ -40,16 +44,10 @@ $("#id_study_remove_btn").click(function () {
 
 $("#id_make_test_btn").click(function () {
     var number = 4;
-    $("#id_test_table tr").remove();
+    test_table = $("#id_test_table");
 
-     test_table= $("#id_test_table");
-     test_table.append(
-        '<tr>' +
-            '<th>#</th>' +
-            '<th>Question</th>' +
-            '<th>Answer</th>' +
-            '<th></th>' +
-        '</tr>');
+    $("#id_check_test_answer").show();
+    $("#id_test_table tr").slice(1).remove();
 
     $.ajax({
         type: "GET",
@@ -64,7 +62,7 @@ $("#id_make_test_btn").click(function () {
                     '<tr>' +
                         '<td></td>' +
                         '<td>' + test_word_list[i].question + '</td>' +
-                        '<td>' + test_word_list[i].answer + '</td>' +
+                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer + '</span></td>' +
                     '</tr>')
             }
             test_table.show();
@@ -74,4 +72,9 @@ $("#id_make_test_btn").click(function () {
             alert("API 요청 실패");
         }
     });
+});
+
+
+$("#id_check_test_answer").click(function () {
+    $("#id_test_table .test_answer").show();
 });
