@@ -177,7 +177,10 @@ class WordStudy(LoginRequiredMixin, View):
     def get(self, request):
         word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
-        return render(request, self.template_name, {'word': word})
+        return render(request, self.template_name, {
+            'word': word,
+            'numberOfWords': Word.alive_objects.filter(user=self.request.user).count()
+        })
 
 
 class WordStudyNext(LoginRequiredMixin, View):

@@ -1,5 +1,14 @@
 $(document).ready(function() {
     $("#id_check_test_answer").hide();
+
+    words_number_select = $("#id_test_words_number_select");
+    words_number = words_number_select.data("number");
+
+    for (i = 0; i < words_number; i++) {
+        words_number_select.append(
+            '<option>' + (i + 1) + '</option>'
+        )
+    }
 });
 
 $("#id_study_confirm_btn").click(function () {
@@ -43,7 +52,7 @@ $("#id_study_remove_btn").click(function () {
 });
 
 $("#id_make_test_btn").click(function () {
-    var number = 4;
+    var question_number = $("#id_test_words_number_select option:selected").text();
     test_table = $("#id_test_table");
 
     $("#id_check_test_answer").show();
@@ -53,11 +62,11 @@ $("#id_make_test_btn").click(function () {
         type: "GET",
         url: "/study/test/",
         data: {
-            num: number
+            num: question_number
         },
         success: function (response) {
             test_word_list = response.testWordList;
-            for (i = 0; i < number; i++) {
+            for (i = 0; i < question_number; i++) {
                 test_table.append(
                     '<tr>' +
                         '<td></td>' +
