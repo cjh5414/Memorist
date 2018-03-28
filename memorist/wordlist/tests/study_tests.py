@@ -99,3 +99,73 @@ def test_check_error_when_there_are_only_words(client):
 
     response_data = json.loads(response.content)
     assert 'errorType' not in response_data
+
+
+@pytest.mark.django_db
+def test_make_a_test_according_to_number(client):
+    testuser_login(client, 'test2')
+
+    for i in range(1, 11):
+        client.post('/words/add/', {
+            'question': '단어' + str(i),
+            'answer': 'word' + str(i),
+        })
+
+    response = client.get('/study/test/?num=4')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    assert len(test_word_list) == 4
+    question_list = []
+    for i in range(7, 11):
+        question_list.append('단어' + str(i))
+
+    for word in test_word_list:
+        assert word['question'] in question_list
+
+    test_question_list = []
+    for word in test_word_list:
+        test_question_list.append(word['question'])
+
+    assert len(set(test_question_list)) == len(test_question_list)
+
+    response = client.get('/study/test/?num=7')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    assert len(test_word_list) == 7
+    question_list = []
+    for i in range(4, 11):
+        question_list.append('단어' + str(i))
+
+    for word in test_word_list:
+        assert word['question'] in question_list
+
+    test_question_list = []
+    for word in test_word_list:
+        test_question_list.append(word['question'])
+
+    assert len(set(test_question_list)) == len(test_question_list)
+
+
+@pytest.mark.django_db
+def test_random_order_in_making_a_test(client):
+    testuser_login(client, 'test2')
+    ordered_word_list = []
+
+    for i in range(1, 5):
+        client.post('/words/add/', {
+            'question': '단어' + str(i),
+            'answer': 'word' + str(i),
+        })
+
+        ordered_word_list.append({
+            'question': '단어' + str(i),
+            'answer': 'word' + str(i),
+        })
+
+    response = client.get('/study/test/?num=4')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    assert ordered_word_list != test_word_list

@@ -1,3 +1,14 @@
+$(document).ready(function() {
+    words_number_select = $("#id_test_words_number_select");
+    words_number = words_number_select.data("number");
+
+    for (i = 0; i < words_number; i++) {
+        words_number_select.append(
+            '<option>' + (i + 1) + '</option>'
+        )
+    }
+});
+
 $("#id_study_confirm_btn").click(function () {
     $("#id_study_answer_block").show();
 });
@@ -36,4 +47,60 @@ $("#id_study_remove_btn").click(function () {
             alert("API 요청 실패");
         }
     });
+});
+
+$("#id_make_test_btn").click(function () {
+    var question_number = $("#id_test_words_number_select option:selected").text();
+    test_table = $("#id_test_table");
+
+    $("#id_check_test_answer_btn").prop("disabled", false);
+    $("#id_test_table .test_answer").hide();
+    $("#id_check_test_answer_btn").text("답 확인");
+    $("#id_check_test_answer_btn").val("off");
+    $("#id_test_table tr").slice(1).remove();
+
+    $.ajax({
+        type: "GET",
+        url: "/study/test/",
+        data: {
+            num: question_number
+        },
+        success: function (response) {
+            test_word_list = response.testWordList;
+            for (i = 0; i < question_number; i++) {
+                test_table.append(
+                    '<tr>' +
+                        '<td></td>' +
+                        '<td>' + test_word_list[i].question + '</td>' +
+                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer + '</span></td>' +
+                    '</tr>')
+            }
+            test_table.show();
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+});
+
+
+$("#id_check_test_answer_btn").click(function () {
+    var answer_status = $(this).val();
+    if(answer_status==="on") {
+        $("#id_test_table .test_answer").hide();
+        $(this).text("답 확인");
+        $(this).val("off");
+    }
+    else {
+        $("#id_test_table .test_answer").show();
+        $(this).text("답 제거");
+        $(this).val("on");
+    }
+
+});
+
+
+$("#id_test_words_number_select").change(function() {
+    $("#id_make_test_btn").prop("disabled", false);
 });
