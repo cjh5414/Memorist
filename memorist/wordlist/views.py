@@ -177,7 +177,10 @@ class WordStudy(LoginRequiredMixin, View):
     def get(self, request):
         word = Word.alive_objects.filter(user=request.user).order_by('?').first()
 
-        return render(request, self.template_name, {'word': word})
+        return render(request, self.template_name, {
+            'word': word,
+            'numberOfWords': Word.alive_objects.filter(user=self.request.user).count()
+        })
 
 
 class WordStudyNext(LoginRequiredMixin, View):
@@ -200,6 +203,26 @@ class WordStudyNext(LoginRequiredMixin, View):
                 'question': word.question,
                 'answer': word.answer,
             })
+
+
+class MakeTest(LoginRequiredMixin, View):
+    def get(self, request):
+        num = int(request.GET['num'])
+        alive_word_list = Word.alive_objects.filter(user=request.user)
+        test_word_list = alive_word_list[len(alive_word_list)-num:]
+        json_result = []
+        for word in test_word_list:
+            json_result.append({
+                'question': word.question,
+                'answer': word.answer
+            })
+
+        import random
+        random.shuffle(json_result)
+
+        return JsonResponse({
+            'testWordList': json_result
+        })
 
 
 class Pronounce(LoginRequiredMixin, View):

@@ -3,24 +3,40 @@
 {% block title %}Study word{% endblock %}
 
 {% block body %}
-    <div id="id_study_question_types">
-        <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
-        <label class="radio-inline"><input type="radio" name="question_type">Words</label>
-        <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+    <div>
+        <div id="id_study_question_types">
+            <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
+            <label class="radio-inline"><input type="radio" name="question_type">Words</label>
+            <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+        </div>
+        <div>
+            Question : <span id="id_study_question_block">{{ word.question }}</span>
+            <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block"
+                    data-mediaurl="{{ MEDIA_URL }}">P
+            </button>
+        </div>
+        <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
+
+        {% load bootstrap3 %}
+        {% buttons %}
+            <button id="id_study_confirm_btn" type="button" class="btn btn-primary">답 확인</button>
+            <button id="id_study_next_btn" type="button" class="btn btn-primary">다음</button>
+            <button id="id_study_remove_btn" type="button" class="btn btn-primary" data-id="{{ word.id }}">제거</button>
+        {% endbuttons %}
     </div>
     <hr>
     <div>
-        Question : <span id="id_study_question_block">{{ word.question }}</span>
-        <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block"
-                data-mediaurl="{{ MEDIA_URL }}">P
-        </button>
+        <select id="id_test_words_number_select" class="form-control col-sm-3" data-number="{{ numberOfWords }}" style="width: 7%; margin-right: 7px;" placeholder="Number">
+            <option disabled selected>Number</option>
+        </select>
+        <button id="id_make_test_btn" type="button" class="btn btn-primary" disabled>시험 만들기</button>
+        <button id="id_check_test_answer_btn" type="button" class="btn btn-primary" value="off" disabled>답 확인</button>
+        <table id="id_test_table" class="table table-hover" hidden>
+            <tr>
+                <th>#</th>
+                <th width="49%">Question</th>
+                <th width="49%">Answer</th>
+            </tr>
+        </table>
     </div>
-    <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
-
-    {% load bootstrap3 %}
-    {% buttons %}
-        <button id="id_study_confirm_btn" type="button" class="btn btn-primary">답 확인</button>
-        <button id="id_study_next_btn" type="button" class="btn btn-primary">다음</button>
-        <button id="id_study_remove_btn" type="button" class="btn btn-primary" data-id="{{ word.id }}">제거</button>
-    {% endbuttons %}
 {% endblock %}
