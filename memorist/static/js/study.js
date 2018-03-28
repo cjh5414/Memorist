@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    $("#id_check_test_answer").hide();
-
     words_number_select = $("#id_test_words_number_select");
     words_number = words_number_select.data("number");
 
@@ -55,7 +53,7 @@ $("#id_make_test_btn").click(function () {
     var question_number = $("#id_test_words_number_select option:selected").text();
     test_table = $("#id_test_table");
 
-    $("#id_check_test_answer").show();
+    $("#id_check_test_answer").prop("disabled", false);
     $("#id_test_table tr").slice(1).remove();
 
     $.ajax({
@@ -86,4 +84,9 @@ $("#id_make_test_btn").click(function () {
 
 $("#id_check_test_answer").click(function () {
     $("#id_test_table .test_answer").show();
+});
+
+
+$("#id_test_words_number_select").change(function() {
+    $("#id_make_test_btn").prop("disabled", false);
 });
