@@ -53,7 +53,10 @@ $("#id_make_test_btn").click(function () {
     var question_number = $("#id_test_words_number_select option:selected").text();
     test_table = $("#id_test_table");
 
-    $("#id_check_test_answer").prop("disabled", false);
+    $("#id_check_test_answer_btn").prop("disabled", false);
+    $("#id_test_table .test_answer").hide();
+    $("#id_check_test_answer_btn").text("답 확인");
+    $("#id_check_test_answer_btn").val("off");
     $("#id_test_table tr").slice(1).remove();
 
     $.ajax({
@@ -82,8 +85,19 @@ $("#id_make_test_btn").click(function () {
 });
 
 
-$("#id_check_test_answer").click(function () {
-    $("#id_test_table .test_answer").show();
+$("#id_check_test_answer_btn").click(function () {
+    var answer_status = $(this).val();
+    if(answer_status==="on") {
+        $("#id_test_table .test_answer").hide();
+        $(this).text("답 확인");
+        $(this).val("off");
+    }
+    else {
+        $("#id_test_table .test_answer").show();
+        $(this).text("답 제거");
+        $(this).val("on");
+    }
+
 });
 
 
