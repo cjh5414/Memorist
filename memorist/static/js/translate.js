@@ -39,9 +39,9 @@ $("#id_translate_button").click(function () {
                 $("#id_answer").val(response.papago_translation_result);
                 if (response.glosbe_translation_result!=undefined) {
                     for (i=0; i<response.glosbe_translation_result.length; i++) {
-                        $("#id_glosbe_block").append($('<p/>', {
-                            text: response.glosbe_translation_result[i]
-                        }));
+                        $("#id_glosbe_result_group").append(
+                            '<a class="glosbe_result_list list-group-item">' +
+                            response.glosbe_translation_result[i] + '</a>');
                     }
                 }
                 $("#id_question").focus();
