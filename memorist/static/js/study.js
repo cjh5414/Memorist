@@ -69,7 +69,7 @@ $("#id_make_test_btn").click(function () {
             test_word_list = response.testWordList;
             for (i = 0; i < question_number; i++) {
                 test_table.append(
-                    '<tr>' +
+                    '<tr onClick="onClickTestCol(\'' + i + '\')">' +
                         '<td></td>' +
                         '<td>' + test_word_list[i].question + '</td>' +
                         '<td><span class="test_answer" hidden>' + test_word_list[i].answer + '</span></td>' +
@@ -84,6 +84,11 @@ $("#id_make_test_btn").click(function () {
     });
 });
 
+function onClickTestCol(index) {
+    trs = $("#id_test_table, tr");
+    test_answer = trs.eq(parseInt(index)+2).find(".test_answer");
+    test_answer.show();
+}
 
 $("#id_check_test_answer_btn").click(function () {
     var answer_status = $(this).val();
