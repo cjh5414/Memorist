@@ -24,6 +24,11 @@ function getCookie(c_name)
     return "";
  }
 
+
+function onClickTranslatedResultList(word) {
+    $("#id_answer").val($("#id_answer").val() + ", " + word);
+}
+
 $("#id_translate_button").click(function () {
     $("#id_glosbe_block").empty();
 
@@ -39,9 +44,9 @@ $("#id_translate_button").click(function () {
                 $("#id_answer").val(response.papago_translation_result);
                 if (response.glosbe_translation_result!=undefined) {
                     for (i=0; i<response.glosbe_translation_result.length; i++) {
-                        $("#id_glosbe_block").append($('<p/>', {
-                            text: response.glosbe_translation_result[i]
-                        }));
+                        $("#id_glosbe_result_group").append(
+                            '<a href="#" class="list-group-item" onClick="onClickTranslatedResultList(\'' + response.glosbe_translation_result[i] + '\')">' +
+                            response.glosbe_translation_result[i] + '</a>');
                     }
                 }
                 $("#id_question").focus();
@@ -52,7 +57,6 @@ $("#id_translate_button").click(function () {
         });
     }
 });
-
 
 $("#id_naver_dic_button").click(function () {
     var question = $("#id_question").val();
@@ -139,4 +143,3 @@ $(".restore_word_btn").click(function() {
         }
     });
 });
-

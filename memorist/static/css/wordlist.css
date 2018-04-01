@@ -25,3 +25,10 @@ table tr td:first-child::before {
 table td:first-child, th:first-child {
     width: 2%;
 }
+
+#id_glosbe_result_group a {
+    padding: 5px;
+    padding-left: 10px;
+    border-left: 0;
+    border-right: 0;
+}
