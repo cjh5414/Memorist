@@ -26,8 +26,8 @@ table td:first-child, th:first-child {
     width: 2%;
 }
 
-a.glosbe_result_list {
-    padding: 8px;
+#id_glosbe_result_group a {
+    padding: 5px;
     padding-left: 10px;
     border-left: 0;
     border-right: 0;
