@@ -102,7 +102,6 @@ $("#id_check_test_answer_btn").click(function () {
         $(this).text("답 제거");
         $(this).val("on");
     }
-
 });
 
 
