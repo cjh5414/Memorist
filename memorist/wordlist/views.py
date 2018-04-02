@@ -184,8 +184,8 @@ class WordStudy(LoginRequiredMixin, View):
 
 
 class WordStudyNext(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        question_type = request.POST.get('questionType')
+    def get(self, request, *args, **kwargs):
+        question_type = request.GET.get('questionType')
         if question_type == "Words":
             word = Word.alive_objects.filter(user=request.user, question_type='W').order_by('?').first()
         elif question_type == "Sentences":
@@ -207,7 +207,7 @@ class WordStudyNext(LoginRequiredMixin, View):
 
 class MakeTest(LoginRequiredMixin, View):
     def get(self, request):
-        num = int(request.GET['num'])
+        num = int(request.GET.get('num'))
         alive_word_list = Word.alive_objects.filter(user=request.user)
         test_word_list = alive_word_list[len(alive_word_list)-num:]
         json_result = []

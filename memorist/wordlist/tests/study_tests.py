@@ -21,7 +21,7 @@ def test_basic_study_view(client):
 @pytest.mark.django_db
 def test_study_api(client):
     testuser_login(client)
-    response = client.post('/study/next/')
+    response = client.get('/study/next/')
 
     response_data = json.loads(response.content)
 
@@ -51,7 +51,7 @@ def test_study_api_from_only_own_word_list(client):
     words = Word.alive_objects.filter(user=another)
     for i in range(20):
         for word in words:
-            response = client.post('/study/next/')
+            response = client.get('/study/next/')
             response_data = json.loads(response.content)
             assert word.question != response_data['answer']
 
@@ -61,7 +61,7 @@ def test_study_only_words(client):
     testuser_login(client, 'test2')
 
     for i in range(20):
-        response = client.post('/study/next/', {
+        response = client.get('/study/next/', {
             'questionType': 'Words'
         })
         response_data = json.loads(response.content)
@@ -73,7 +73,7 @@ def test_study_only_sentences(client):
     testuser_login(client, 'test2')
 
     for i in range(20):
-        response = client.post('/study/next/', {
+        response = client.get('/study/next/', {
             'questionType': 'Sentences'
         })
         response_data = json.loads(response.content)
@@ -84,7 +84,7 @@ def test_study_only_sentences(client):
 def test_check_error_when_there_are_only_words(client):
     testuser_login(client)
 
-    response = client.post('/study/next/', {
+    response = client.get('/study/next/', {
         'questionType': 'Sentences'
     })
 
@@ -93,7 +93,7 @@ def test_check_error_when_there_are_only_words(client):
 
     testuser_login(client, 'test2')
 
-    response = client.post('/study/next/', {
+    response = client.get('/study/next/', {
         'questionType': 'Sentences'
     })
 
