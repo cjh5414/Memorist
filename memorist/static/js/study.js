@@ -17,7 +17,7 @@ $("#id_study_next_btn").click(function () {
     var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
 
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "/study/next/",
         data: {'questionType': question_type},
         success: function (response) {
