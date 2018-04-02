@@ -30,7 +30,7 @@ function onClickTranslatedResultList(word) {
 }
 
 $("#id_translate_button").click(function () {
-    $("#id_glosbe_block").empty();
+    $("#id_glosbe_result_group").empty();
 
     var question = $("#id_question").val();
     if(question.length!==0) {
