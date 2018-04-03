@@ -49,6 +49,11 @@ $("#id_translate_button").click(function () {
                             response.glosbe_translation_result[i] + '</a>');
                     }
                 }
+                $("#id_oxford_result_group").append(
+                    '<p>oxford dictionary result</p>' +
+                    '<p>example1</p>' +
+                    '<p>example2</p>'
+                );
                 $("#id_question").focus();
             },
             error: function (request, status, error) {
