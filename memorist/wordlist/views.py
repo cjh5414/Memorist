@@ -116,7 +116,7 @@ class WordTranslate(LoginRequiredMixin, View):
         client_id = os.getenv('PAPAGO_API_CLIENT_ID')
         client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
         if client_id is None or client_secret is None:
-            print("Error : Missed Environment Variable")
+            print("Error : Missed Papago Environment Variable")
             return
 
         text = urllib.parse.quote(question)
@@ -170,6 +170,9 @@ class WordTranslate(LoginRequiredMixin, View):
 
         oxford_id = os.getenv('OXFORD_API_ID')
         oxford_key = os.getenv('OXFORD_API_KEY')
+        if oxford_id is None or oxford_key is None:
+            print("Error : Missed Oxford Environment Variable")
+            return
 
         OXFORD_URL = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/' + lang + '/' + word.lower()
 
