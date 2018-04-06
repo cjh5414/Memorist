@@ -1,6 +1,7 @@
 import os
 import json
 import urllib.request
+import requests
 
 from django.views import View
 from django.shortcuts import render
@@ -92,6 +93,9 @@ class WordTranslate(LoginRequiredMixin, View):
                 print('Error : glosbe API request fail')
             translated_result['glosbe_translation_result'] = glosbe_translation_result
 
+            oxford_dictionary_result = WordTranslate.request_oxford_api(question, lang)
+            translated_result['oxford_dictionary_result'] = oxford_dictionary_result
+
         return JsonResponse(translated_result)
 
     @staticmethod
@@ -157,6 +161,38 @@ class WordTranslate(LoginRequiredMixin, View):
             return translated_text
         else:
             print("Error Code:" + rescode)
+            return False
+
+    @staticmethod
+    def request_oxford_api(word, lang):
+        dictionary_result = []
+        if lang != 'en':
+            return 'not english'
+
+        oxford_id = os.getenv('OXFORD_API_ID')
+        oxford_key = os.getenv('OXFORD_API_KEY')
+
+        OXFORD_URL = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/' + lang + '/' + word.lower()
+
+        response = requests.get(OXFORD_URL, headers={'app_id': oxford_id, 'app_key': oxford_key})
+
+        if response.status_code == 200:
+            json_result = response.json()
+            senses = json_result['results'][0]['lexicalEntries'][0]['entries'][0]['senses']
+
+            for sense in senses:
+                examples = []
+                for example in sense['examples']:
+                    examples.append(example['text'])
+                dictionary_result.append({
+                    'definitions': sense['definitions'],
+                    'examples': examples
+                })
+            import pprint
+            print(pprint.pprint(dictionary_result))
+            return dictionary_result
+        else:
+            print("Error Code:" + str(response.status_code))
             return False
 
     @staticmethod

@@ -180,6 +180,9 @@ def test_en_en_dictionary_api(client):
            'a playing card with a single spot on it, ranked as the highest card in its suit in most card games'
 
     assert response_data['oxford_dictionary_result'][0]['examples'][0] == \
+           'life had started dealing him aces again'
+
+    assert response_data['oxford_dictionary_result'][0]['examples'][1] == \
            'the ace of diamonds'
 
     assert response_data['oxford_dictionary_result'][1]['definitions'][0] == \
