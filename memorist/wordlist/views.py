@@ -93,8 +93,9 @@ class WordTranslate(LoginRequiredMixin, View):
                 print('Error : glosbe API request fail')
             translated_result['glosbe_translation_result'] = glosbe_translation_result
 
-            oxford_dictionary_result = WordTranslate.request_oxford_api(question, lang)
-            translated_result['oxford_dictionary_result'] = oxford_dictionary_result
+            if lang == 'en':
+                oxford_dictionary_result = WordTranslate.request_oxford_api(question, lang)
+                translated_result['oxford_dictionary_result'] = oxford_dictionary_result
 
         return JsonResponse(translated_result)
 
@@ -166,8 +167,6 @@ class WordTranslate(LoginRequiredMixin, View):
     @staticmethod
     def request_oxford_api(word, lang):
         dictionary_result = []
-        if lang != 'en':
-            return 'not english'
 
         oxford_id = os.getenv('OXFORD_API_ID')
         oxford_key = os.getenv('OXFORD_API_KEY')
@@ -181,15 +180,14 @@ class WordTranslate(LoginRequiredMixin, View):
             senses = json_result['results'][0]['lexicalEntries'][0]['entries'][0]['senses']
 
             for sense in senses:
-                examples = []
-                for example in sense['examples']:
-                    examples.append(example['text'])
-                dictionary_result.append({
-                    'definitions': sense['definitions'],
-                    'examples': examples
-                })
-            import pprint
-            print(pprint.pprint(dictionary_result))
+                if 'examples' in sense:
+                    examples = []
+                    for example in sense['examples']:
+                        examples.append(example['text'])
+                    dictionary_result.append({
+                        'definitions': sense['definitions'],
+                        'examples': examples
+                    })
             return dictionary_result
         else:
             print("Error Code:" + str(response.status_code))

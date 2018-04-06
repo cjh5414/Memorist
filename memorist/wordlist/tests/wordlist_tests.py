@@ -193,6 +193,25 @@ def test_en_en_dictionary_api(client):
 
 
 @pytest.mark.django_db
+def test_en_en_dictionary_only_work_with_english_word_question(client):
+    testuser_login(client)
+
+    response = client.post('/translate/', {
+        'question': '에이스',
+    })
+
+    response_data = json.loads(response.content)
+    assert 'oxford_dictionary_result' not in response_data
+
+    response = client.post('/translate/', {
+        'question': 'i am a boy.',
+    })
+
+    response_data = json.loads(response.content)
+    assert 'oxford_dictionary_result' not in response_data
+
+
+@pytest.mark.django_db
 def test_confirm_deleted_word(client):
     testuser_login(client)
     word = Word.objects.get(question='사과')
