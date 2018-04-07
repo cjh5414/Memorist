@@ -168,6 +168,50 @@ def test_translate_api_en_to_ko(client):
 
 
 @pytest.mark.django_db
+def test_en_en_dictionary_api(client):
+    testuser_login(client)
+
+    response = client.post('/translate/', {
+        'question': 'ace',
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['oxford_dictionary_result'][0]['definitions'][0] == \
+           'a playing card with a single spot on it, ranked as the highest card in its suit in most card games'
+
+    assert response_data['oxford_dictionary_result'][0]['examples'][0] == \
+           'life had started dealing him aces again'
+
+    assert response_data['oxford_dictionary_result'][0]['examples'][1] == \
+           'the ace of diamonds'
+
+    assert response_data['oxford_dictionary_result'][1]['definitions'][0] == \
+           'a person who excels at a particular sport or other activity'
+
+    assert response_data['oxford_dictionary_result'][1]['examples'][0] == \
+           'a motorcycle ace'
+
+
+@pytest.mark.django_db
+def test_en_en_dictionary_only_work_with_english_word_question(client):
+    testuser_login(client)
+
+    response = client.post('/translate/', {
+        'question': '에이스',
+    })
+
+    response_data = json.loads(response.content)
+    assert 'oxford_dictionary_result' not in response_data
+
+    response = client.post('/translate/', {
+        'question': 'i am a boy.',
+    })
+
+    response_data = json.loads(response.content)
+    assert 'oxford_dictionary_result' not in response_data
+
+
+@pytest.mark.django_db
 def test_confirm_deleted_word(client):
     testuser_login(client)
     word = Word.objects.get(question='사과')
@@ -243,3 +287,4 @@ def test_prounce(client):
     assert response_data['file_name'] == file_name
     file_path = os.path.join(settings.MEDIA_ROOT, file_name)
     assert os.path.isfile(file_path) is True
+

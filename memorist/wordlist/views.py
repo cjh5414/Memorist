@@ -1,6 +1,7 @@
 import os
 import json
 import urllib.request
+import requests
 
 from django.views import View
 from django.shortcuts import render
@@ -92,6 +93,10 @@ class WordTranslate(LoginRequiredMixin, View):
                 print('Error : glosbe API request fail')
             translated_result['glosbe_translation_result'] = glosbe_translation_result
 
+            if lang == 'en':
+                oxford_dictionary_result = WordTranslate.request_oxford_api(question, lang)
+                translated_result['oxford_dictionary_result'] = oxford_dictionary_result
+
         return JsonResponse(translated_result)
 
     @staticmethod
@@ -111,7 +116,7 @@ class WordTranslate(LoginRequiredMixin, View):
         client_id = os.getenv('PAPAGO_API_CLIENT_ID')
         client_secret = os.getenv('PAPAGO_API_CLIENT_SECRET')
         if client_id is None or client_secret is None:
-            print("Error : Missed Environment Variable")
+            print("Error : Missed Papago Environment Variable")
             return
 
         text = urllib.parse.quote(question)
@@ -157,6 +162,38 @@ class WordTranslate(LoginRequiredMixin, View):
             return translated_text
         else:
             print("Error Code:" + rescode)
+            return False
+
+    @staticmethod
+    def request_oxford_api(word, lang):
+        dictionary_result = []
+
+        oxford_id = os.getenv('OXFORD_API_ID')
+        oxford_key = os.getenv('OXFORD_API_KEY')
+        if oxford_id is None or oxford_key is None:
+            print("Error : Missed Oxford Environment Variable")
+            return
+
+        OXFORD_URL = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/' + lang + '/' + word.lower()
+
+        response = requests.get(OXFORD_URL, headers={'app_id': oxford_id, 'app_key': oxford_key})
+
+        if response.status_code == 200:
+            json_result = response.json()
+            senses = json_result['results'][0]['lexicalEntries'][0]['entries'][0]['senses']
+
+            for sense in senses:
+                if 'examples' in sense:
+                    examples = []
+                    for example in sense['examples']:
+                        examples.append(example['text'])
+                    dictionary_result.append({
+                        'definitions': sense['definitions'],
+                        'examples': examples
+                    })
+            return dictionary_result
+        else:
+            print("Error Code:" + str(response.status_code))
             return False
 
     @staticmethod
