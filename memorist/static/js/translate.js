@@ -31,6 +31,7 @@ function onClickTranslatedResultList(word) {
 
 $("#id_translate_button").click(function () {
     $("#id_glosbe_result_group").empty();
+    $("#id_oxford_result_group").empty();
 
     var question = $("#id_question").val();
     if(question.length!==0) {
@@ -42,18 +43,36 @@ $("#id_translate_button").click(function () {
             dataType: "json",
             success: function (response) {
                 $("#id_answer").val(response.papago_translation_result);
-                if (response.glosbe_translation_result!=undefined) {
+                if (response.glosbe_translation_result!==undefined) {
                     for (i=0; i<response.glosbe_translation_result.length; i++) {
                         $("#id_glosbe_result_group").append(
                             '<a href="#" class="list-group-item" onClick="onClickTranslatedResultList(\'' + response.glosbe_translation_result[i] + '\')">' +
                             response.glosbe_translation_result[i] + '</a>');
                     }
                 }
-                $("#id_oxford_result_group").append(
-                    '<p>oxford dictionary result</p>' +
-                    '<p>example1</p>' +
-                    '<p>example2</p>'
-                );
+                if (response.oxford_dictionary_result!==undefined) {
+                    for (i=0; i<response.oxford_dictionary_result.length; i++) {
+                        var entry = response.oxford_dictionary_result[i];
+
+                        $("#id_oxford_result_group").append(
+                            '<div>'
+                        );
+
+                        $("#id_oxford_result_group").append(
+                            '<h3>' + (i+1) + '. ' + entry['definitions'][0] + '</h3>'
+                        );
+
+                        for (j=0; j<entry['examples'].length; j++) {
+                            $("#id_oxford_result_group").append(
+                                'ex) ' + entry['examples'][j] + '</br>'
+                            );
+                        }
+
+                        $("#id_oxford_result_group").append(
+                            '</div>'
+                        );
+                    }
+                }
                 $("#id_question").focus();
             },
             error: function (request, status, error) {
