@@ -79,6 +79,8 @@ class WordTranslate(LoginRequiredMixin, View):
         question = request.POST['question']
         lang = WordTranslate.what_is_language(question)
         translated_result = {}
+        translated_result['glosbe_translation_result'] = None
+        translated_result['oxford_dictionary_result'] = None
 
         papago_translation_result = WordTranslate.request_papago_api(question, lang)
         if papago_translation_result is False:
