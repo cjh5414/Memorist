@@ -164,7 +164,7 @@ def test_translate_api_en_to_ko(client):
     response_data = json.loads(response.content)
     assert response.status_code == 200
     assert response_data['papago_translation_result'] == '나는 소년 입니다.'
-    assert 'glosbe_translation_result' not in response_data
+    assert response_data['glosbe_translation_result'] is None
 
 
 @pytest.mark.django_db
@@ -201,14 +201,14 @@ def test_en_en_dictionary_only_work_with_english_word_question(client):
     })
 
     response_data = json.loads(response.content)
-    assert 'oxford_dictionary_result' not in response_data
+    assert response_data['oxford_dictionary_result'] is None
 
     response = client.post('/translate/', {
         'question': 'i am a boy.',
     })
 
     response_data = json.loads(response.content)
-    assert 'oxford_dictionary_result' not in response_data
+    assert response_data['oxford_dictionary_result'] is None
 
 
 @pytest.mark.django_db
