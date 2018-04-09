@@ -87,7 +87,7 @@ $("#id_make_test_btn").click(function () {
 function onClickTestCol(index) {
     trs = $("#id_test_table, tr");
     test_answer = trs.eq(parseInt(index)+2).find(".test_answer");
-    test_answer.show();
+    test_answer.toggle();
 }
 
 $("#id_check_test_answer_btn").click(function () {
