@@ -11,11 +11,12 @@
         </div>
         <div>
             Question : <span id="id_study_question_block">{{ word.question }}</span>
-            <button id="id_pronounce_button" type="button" class="btn btn-primary" data-questionid="id_study_question_block"
-                    data-mediaurl="{{ MEDIA_URL }}">P
-            </button>
+            <button type="button" onClick="onClickPronounce(event, id_study_question_block.textContent)" class="btn btn-primary">P</button>
         </div>
-        <p>Answer : <span hidden id="id_study_answer_block">{{ word.answer }}</span></p>
+        <p>Answer : <span hidden id="id_study_answer_block">
+            <span id="id_study_answer_box">{{ word.answer }}</span>
+            <button type="button" onClick="onClickPronounce(event, id_study_answer_box.textContent)" class="btn btn-primary">P</button>
+        </span></p>
 
         {% load bootstrap3 %}
         {% buttons %}
