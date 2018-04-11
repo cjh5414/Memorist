@@ -8,17 +8,18 @@
         {% csrf_token %}
         <div class="form-group">
             <label class="control-label" for="id_question">Question</label>
+            <a href="#" onClick="onClickPronounce(event, id_question.value)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
             <input type="text" name="question" maxlength="255" class="form-control" placeholder="Question" required id="id_question"/>
         </div>
-        {% buttons %}
+        <div class="form-group">
             <button id="id_translate_button" type="button" class="btn btn-primary">번역</button>
             <button id="id_naver_dic_button" type="button" class="btn btn-primary">네이버 사전</button>
             <button id="id_clear_button" type="button" class="btn btn-primary">지우기</button>
             <button id="id_exchange_button" type="button" class="btn btn-primary">↕</button>
-            <button type="button" onClick="onClickPronounce(event, id_question.value)" class="btn btn-primary">P</button>
-        {% endbuttons %}
+        </div>
         <div class="form-group">
             <label class="control-label" for="id_answer">Answer</label>
+            <a href="#" onClick="onClickPronounce(event, id_answer.value)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
             <input type="text" name="answer" maxlength="255" class="form-control" placeholder="Answer" required id="id_answer"/>
         </div>
         {% buttons %}
