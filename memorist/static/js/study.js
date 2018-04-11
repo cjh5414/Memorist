@@ -74,7 +74,9 @@ $("#id_make_test_btn").click(function () {
                         '<td>' + test_word_list[i].question +
                             '<button onClick="onClickPronounce(event, \'' + test_word_list[i].question + '\')" class="btn btn-primary">P</button>' +
                         '</td>' +
-                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer + '</span></td>' +
+                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer +
+                            '<button onClick="onClickPronounce(event, \'' + test_word_list[i].answer + '\')" class="btn btn-primary">P</button>' +
+                        '</span></td>' +
                     '</tr>')
             }
             test_table.show();
