@@ -11,11 +11,11 @@
         </div>
         <div>
             Question : <span id="id_study_question_block">{{ word.question }}</span>
-            <button type="button" onClick="onClickPronounce(event, id_study_question_block.textContent)" class="btn btn-primary">P</button>
+            <a href="#" onClick="onClickPronounce(event, id_study_question_block.textContent)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
         </div>
         <p>Answer : <span hidden id="id_study_answer_block">
             <span id="id_study_answer_box">{{ word.answer }}</span>
-            <button type="button" onClick="onClickPronounce(event, id_study_answer_box.textContent)" class="btn btn-primary">P</button>
+            <a href="#" onClick="onClickPronounce(event, id_study_answer_box.textContent)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
         </span></p>
 
         {% load bootstrap3 %}
