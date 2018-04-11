@@ -32,3 +32,9 @@ table td:first-child, th:first-child {
     border-left: 0;
     border-right: 0;
 }
+
+.glyphicon {
+    left: 2px;
+    top: 4px;
+    font-size: 21px;
+}

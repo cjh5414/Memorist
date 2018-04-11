@@ -23,7 +23,7 @@ $("#id_study_next_btn").click(function () {
         success: function (response) {
             $("#id_study_remove_btn").data("id", response.id);
             $("#id_study_question_block").text(response.question);
-            $("#id_study_answer_block").text(response.answer);
+            $("#id_study_answer_box").text(response.answer);
             $("#id_study_answer_block").hide();
         },
         error: function (request, status, error) {
@@ -71,8 +71,12 @@ $("#id_make_test_btn").click(function () {
                 test_table.append(
                     '<tr onClick="onClickTestCol(\'' + i + '\')">' +
                         '<td></td>' +
-                        '<td>' + test_word_list[i].question + '</td>' +
-                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer + '</span></td>' +
+                        '<td>' + test_word_list[i].question + ' ' +
+                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].question + '\')"><span class="glyphicon glyphicon-volume-up" style=""></span></a>' +
+                        '</td>' +
+                        '<td><span class="test_answer" hidden>' + test_word_list[i].answer + ' ' +
+                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].answer + '\')"><span class="glyphicon glyphicon-volume-up" style=""></span></a>' +
+                        '</span></td>' +
                     '</tr>')
             }
             test_table.show();
@@ -83,6 +87,27 @@ $("#id_make_test_btn").click(function () {
         }
     });
 });
+
+function onClickPronounce(event, source) {
+    event.stopPropagation();
+
+    if(source!=='' && source!==undefined) {
+        $.ajax({
+            type: "POST",
+            url: "/pronounce/",
+            data: {'question': source},
+            success: function (response) {
+                var audio = new Audio(MEDIA_URL + response.file_name);
+                audio.load();
+                audio.play();
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("API 요청 실패");
+            }
+        });
+    }
+}
 
 function onClickTestCol(index) {
     trs = $("#id_test_table, tr");
