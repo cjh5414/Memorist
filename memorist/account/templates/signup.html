@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block body %}
     <form method="post" class="form-horizontal">
-        <h1>Sign in</h1>
+        <h1>Sign Up</h1>
         {% load bootstrap3 %}
         {% csrf_token %}
 
@@ -16,6 +16,13 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">EMAIL</label>
+            <div class="col-sm-10">
+                <input type="text" name="email" maxlength="255" class="form-control" required/>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-2 control-label">PASSWORD</label>
             <div class="col-sm-10">
                 <input type="password" name="password" maxlength="255" class="form-control" required/>
@@ -23,15 +30,16 @@
         </div>
 
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">로그인</button>
+            <label class="col-sm-2 control-label">CONFIRM PASSWORD</label>
+            <div class="col-sm-10">
+                <input type="password" name="password" maxlength="255" class="form-control" required/>
             </div>
         </div>
-        <div class="inline-group">
-            <br/>
-            <h3><b>Free Account</b></h3>
-            ID : test <br/>
-            PW : test1234!
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </div>
         </div>
     </form>
 {% endblock %}
