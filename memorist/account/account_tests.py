@@ -19,9 +19,11 @@ def test_signup(client):
     response = client.post('/signup/', {
         'username': 'memo1920',
         'email': 'memo1920@gmail.com',
-        'password': 'mm1234!',
+        'password1': 'mm1234!',
+        'password2': 'mm1234!',
     })
 
+    assert response.status_code == 302
     assert response.url == '/login/'
 
     user = User.objects.get(username='memo1920')
