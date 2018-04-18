@@ -2,6 +2,8 @@ import os
 import json
 import urllib.request
 import requests
+from datetime import datetime, timedelta
+import pytz
 
 from django.views import View
 from django.shortcuts import render
@@ -225,12 +227,25 @@ class WordStudy(LoginRequiredMixin, View):
 class WordStudyNext(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         question_type = request.GET.get('questionType')
+        chosen_days_str = request.GET.get('chosenDays')
+
+        words_query_set = Word.alive_objects.filter(user=request.user)
+        if chosen_days_str is not None:
+            local = pytz.timezone("Asia/Seoul")
+            naive = datetime.now()
+            local_dt = local.localize(naive, is_dst=None)
+            utc_dt = local_dt.astimezone(pytz.utc)
+
+            chosen_days = utc_dt - timedelta(days=int(chosen_days_str))
+
+            words_query_set = words_query_set.filter(created_time__gt=chosen_days)
+
         if question_type == "Words":
-            word = Word.alive_objects.filter(user=request.user, question_type='W').order_by('?').first()
+            word = words_query_set.filter(question_type='W').order_by('?').first()
         elif question_type == "Sentences":
-            word = Word.alive_objects.filter(user=request.user, question_type='S').order_by('?').first()
+            word = words_query_set.filter(question_type='S').order_by('?').first()
         else:
-            word = Word.alive_objects.filter(user=request.user).order_by('?').first()
+            word = words_query_set.order_by('?').first()
 
         if word is None:
             return JsonResponse({
