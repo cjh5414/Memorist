@@ -1,5 +1,6 @@
 import pytest
 import json
+from datetime import timedelta
 
 from wordlist.models import *
 
@@ -78,6 +79,31 @@ def test_study_only_sentences(client):
         })
         response_data = json.loads(response.content)
         assert is_sentence(response_data['question']) is True
+
+
+@pytest.mark.django_db
+def test_study_words_chosen_by_days(client):
+    testuser_login(client, 'empty_words_test')
+    test_user = User.objects.get(username='empty_words_test')
+
+    words = []
+    words.append(Word.objects.create(question='오늘 단어', answer="today's word", user_id=test_user.id))
+    words.append(Word.objects.create(question='1일 전 단어', answer='words a day ago', user_id=test_user.id))
+    words.append(Word.objects.create(question='2일 전 단어', answer='words two days ago', user_id=test_user.id))
+    words.append(Word.objects.create(question='3일 전 단어', answer='words tree days ago', user_id=test_user.id))
+
+    for idx, word in enumerate(words):
+        word.created_time = word.created_time - timedelta(days=idx)
+        word.save()
+
+    for i in range(4):
+        response = client.get('/study/next/', {
+            'chosenDays': str(i)
+        })
+
+        response_data = json.loads(response.content)
+        chosen_questions = [word.question for word in words[:(i+1)]]
+        assert response_data['question'] in chosen_questions
 
 
 @pytest.mark.django_db
