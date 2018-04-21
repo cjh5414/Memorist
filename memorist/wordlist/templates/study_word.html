@@ -5,15 +5,23 @@
 {% block body %}
     <div>
         <div class="form-group row" style="margin: 0">
-            <div class="col-xs-4" id="id_study_question_types">
+            <div class="col-sm-4" id="id_study_question_types">
                 <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
                 <label class="radio-inline"><input type="radio" name="question_type">Words</label>
                 <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
             </div>
             <div>
-                <div class="col-xs-3" style="padding: 0; margin-right: 4px; width: 80px;">
-                    <select id="id_test_words_number_select" class="form-control" data-number="{{ numberOfWords }}" style="margin: 0;">
-                        <option disabled selected>며칠 전</option>
+                <div class="col-sm-2" style="padding: 0; margin-right: 4px; width: 70px;">
+                    <select id="id_study_filtered_by_days" class="form-control" style="margin: 0;">
+                        <option disabled selected>Days</option>
+                        <option>All</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>7</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option>
                     </select>
                 </div>
             </div>
