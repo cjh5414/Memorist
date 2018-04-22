@@ -15,11 +15,15 @@ $("#id_study_confirm_btn").click(function () {
 
 $("#id_study_next_btn").click(function () {
     var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
+    var chosen_days = $("#id_study_filtered_by_days option:selected").val();
 
     $.ajax({
         type: "GET",
         url: "/study/next/",
-        data: {'questionType': question_type},
+        data: {
+            'questionType': question_type,
+            'chosenDays': chosen_days
+        },
         success: function (response) {
             $("#id_study_remove_btn").data("id", response.id);
             $("#id_study_question_block").text(response.question);
