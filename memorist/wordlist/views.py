@@ -230,7 +230,7 @@ class WordStudyNext(LoginRequiredMixin, View):
         chosen_days_str = request.GET.get('chosenDays')
 
         words_query_set = Word.alive_objects.filter(user=request.user)
-        if chosen_days_str is not None:
+        if chosen_days_str is not None and chosen_days_str.isdigit():
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)

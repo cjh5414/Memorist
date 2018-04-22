@@ -107,6 +107,17 @@ def test_study_words_chosen_by_days(client):
 
 
 @pytest.mark.django_db
+def test_study_all_days_if_chosen_days_is_not_number(client):
+    testuser_login(client, 'test2')
+
+    response = client.get('/study/next/', {
+        'chosenDays': 'All'
+    })
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_check_error_when_there_are_only_words(client):
     testuser_login(client)
 
