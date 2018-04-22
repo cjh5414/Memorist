@@ -4,10 +4,27 @@
 
 {% block body %}
     <div>
-        <div id="id_study_question_types">
-            <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
-            <label class="radio-inline"><input type="radio" name="question_type">Words</label>
-            <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+        <div class="form-group row" style="margin: 0">
+            <div class="col-sm-4" id="id_study_question_types">
+                <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
+                <label class="radio-inline"><input type="radio" name="question_type">Words</label>
+                <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+            </div>
+            <div>
+                <div class="col-sm-2" style="padding: 0; margin-right: 4px; width: 70px;">
+                    <select id="id_study_filtered_by_days" class="form-control" style="margin: 0;">
+                        <option disabled selected>Days</option>
+                        <option>All</option>
+                        <option value="1">하루</option>
+                        <option value="2">이틀</option>
+                        <option value="3">삼일</option>
+                        <option value="7">일주일</option>
+                        <option value="10">10일</option>
+                        <option value="15">15일</option>
+                        <option value="30">한달</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div>
             Question : <span id="id_study_question_block">{{ word.question }}</span>
