@@ -118,6 +118,24 @@ def test_study_all_days_if_chosen_days_is_not_number(client):
 
 
 @pytest.mark.django_db
+def test_if_there_is_no_word_in_chosen_period(client):
+    testuser_login(client, 'empty_words_test')
+    test_user = User.objects.get(username='empty_words_test')
+
+    word = Word.objects.create(question='오늘 단어', answer="today's word", user_id=test_user.id)
+    word.created_time = word.created_time - timedelta(days=3)
+    word.save()
+
+    response = client.get('/study/next/', {
+        'chosenDays': '1'
+    })
+
+    assert response.status_code == 200
+    response_data = json.loads(response.content)
+    assert response_data['errorType'] == 'NotExist'
+
+
+@pytest.mark.django_db
 def test_check_error_when_there_are_only_words(client):
     testuser_login(client)
 
