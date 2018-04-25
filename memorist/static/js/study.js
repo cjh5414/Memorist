@@ -25,10 +25,15 @@ $("#id_study_next_btn").click(function () {
             'chosenDays': chosen_days
         },
         success: function (response) {
-            $("#id_study_remove_btn").data("id", response.id);
-            $("#id_study_question_block").text(response.question);
-            $("#id_study_answer_box").text(response.answer);
-            $("#id_study_answer_block").hide();
+            if(response.errorType && response.errorType==="NotExist") {
+                alert("해당 되는 단어가 없습니다.");
+            }
+            else {
+                $("#id_study_remove_btn").data("id", response.id);
+                $("#id_study_question_block").text(response.question);
+                $("#id_study_answer_box").text(response.answer);
+                $("#id_study_answer_block").hide();
+            }
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
