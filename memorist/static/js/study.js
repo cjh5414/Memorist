@@ -81,10 +81,10 @@ $("#id_make_test_btn").click(function () {
                     '<tr onClick="onClickTestCol(\'' + i + '\')">' +
                         '<td></td>' +
                         '<td>' + test_word_list[i].question + ' ' +
-                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].question + '\')"><span class="glyphicon glyphicon-volume-up" style=""></span></a>' +
+                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].question + '\')"><span class="glyphicon glyphicon-volume-up pronounce" style=""></span></a>' +
                         '</td>' +
                         '<td><span class="test_answer" hidden>' + test_word_list[i].answer + ' ' +
-                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].answer + '\')"><span class="glyphicon glyphicon-volume-up" style=""></span></a>' +
+                            '<a href="#" onClick="onClickPronounce(event, \'' + test_word_list[i].answer + '\')"><span class="glyphicon glyphicon-volume-up pronounce" style=""></span></a>' +
                         '</span></td>' +
                     '</tr>')
             }

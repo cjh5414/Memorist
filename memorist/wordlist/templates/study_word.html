@@ -28,11 +28,11 @@
         </div>
         <div>
             Question : <span id="id_study_question_block">{{ word.question }}</span>
-            <a href="#" onClick="onClickPronounce(event, id_study_question_block.textContent)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
+            <a href="#" onClick="onClickPronounce(event, id_study_question_block.textContent)"><span class="glyphicon glyphicon-volume-up pronounce" style=""></span></a>
         </div>
         <p>Answer : <span hidden id="id_study_answer_block">
             <span id="id_study_answer_box">{{ word.answer }}</span>
-            <a href="#" onClick="onClickPronounce(event, id_study_answer_box.textContent)"><span class="glyphicon glyphicon-volume-up" style=""></span></a>
+            <a href="#" onClick="onClickPronounce(event, id_study_answer_box.textContent)"><span class="glyphicon glyphicon-volume-up pronounce" style=""></span></a>
         </span></p>
 
         {% load bootstrap3 %}
