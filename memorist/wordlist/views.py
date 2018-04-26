@@ -11,6 +11,7 @@ from django.views.generic import *
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.db.models import Q
 
 from wordlist.forms import WordAddForm
 from wordlist.models import Word
@@ -36,7 +37,12 @@ class WordListView(LoginRequiredMixin, ListView):
     model = Word
 
     def get_queryset(self):
+        query = self.request.GET.get('searchfield')
+
         queryset = Word.alive_objects.filter(user=self.request.user).order_by('-created_time')
+
+        if query:
+            return queryset.filter(Q(question__icontains=query) | Q(answer__icontains=query))
 
         return queryset
 

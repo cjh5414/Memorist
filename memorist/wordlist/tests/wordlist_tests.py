@@ -288,3 +288,25 @@ def test_prounce(client):
     file_path = os.path.join(settings.MEDIA_ROOT, file_name)
     assert os.path.isfile(file_path) is True
 
+
+@pytest.mark.django_db
+def test_search_words(client):
+    testuser_login(client, 'empty_words_test')
+    test_user = User.objects.get(username='empty_words_test')
+
+    words = []
+    words.append(Word.objects.create(question='테스트1', answer="word", user_id=test_user.id))
+    words.append(Word.objects.create(question='테스트2', answer='awords', user_id=test_user.id))
+    words.append(Word.objects.create(question='테스트3', answer='this is word.', user_id=test_user.id))
+    words.append(Word.objects.create(question='테스트4', answer='ward', user_id=test_user.id))
+    words.append(Word.objects.create(question='words', answer='테스트5', user_id=test_user.id))
+    words.append(Word.objects.create(question='nothing', answer='테스트6', user_id=test_user.id))
+
+    response = client.get('/words/', {'searchfield': 'word'})
+
+    assert '테스트1' in response.content.decode('utf-8')
+    assert '테스트2' in response.content.decode('utf-8')
+    assert '테스트3' in response.content.decode('utf-8')
+    assert '테스트4' not in response.content.decode('utf-8')
+    assert '테스트5' in response.content.decode('utf-8')
+    assert '테스트6' not in response.content.decode('utf-8')
