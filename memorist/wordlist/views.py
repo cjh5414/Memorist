@@ -265,6 +265,34 @@ class WordStudyNext(LoginRequiredMixin, View):
             })
 
 
+class GetNumOfWords(LoginRequiredMixin, View):
+    def get(self, request):
+        question_type = request.GET.get('questionType')
+        chosen_days_str = request.GET.get('chosenDays')
+
+        words_query_set = Word.alive_objects.filter(user=request.user)
+        if chosen_days_str is not None and chosen_days_str.isdigit():
+            local = pytz.timezone("Asia/Seoul")
+            naive = datetime.now()
+            local_dt = local.localize(naive, is_dst=None)
+            utc_dt = local_dt.astimezone(pytz.utc)
+
+            chosen_days = utc_dt - timedelta(days=int(chosen_days_str))
+
+            words_query_set = words_query_set.filter(created_time__gt=chosen_days)
+
+        if question_type == "Words":
+            num = words_query_set.filter(question_type='W').count()
+        elif question_type == "Sentences":
+            num = words_query_set.filter(question_type='S').count()
+        else:
+            num = words_query_set.count()
+
+        return JsonResponse({
+                'numberOfWords': num,
+            })
+
+
 class MakeTest(LoginRequiredMixin, View):
     def get(self, request):
         num = int(request.GET.get('num'))
