@@ -170,3 +170,30 @@ $("#id_study_question_types").change(function () {
         }
     });
 });
+
+$("#id_study_filtered_by_days").change(function () {
+    var chosen_days = $("#id_study_filtered_by_days option:selected").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/study/numofwords/",
+        data: {
+            'chosenDays': chosen_days
+        },
+        success: function (response) {
+            words_number_select = $("#id_test_words_number_select");
+            words_number = response.numberOfWords;
+
+            words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
+            for (var i = 0; i < words_number; i++) {
+                words_number_select.append(
+                    '<option>' + (i + 1) + '</option>'
+                )
+            }
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+});
