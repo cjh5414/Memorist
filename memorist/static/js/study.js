@@ -1,12 +1,5 @@
 $(document).ready(function () {
-    words_number_select = $("#id_test_words_number_select");
-    words_number = words_number_select.data("number");
-
-    for (i = 0; i < words_number; i++) {
-        words_number_select.append(
-            '<option>' + (i + 1) + '</option>'
-        )
-    }
+    setNumberOftestWordSelect();
 });
 
 $("#id_study_confirm_btn").click(function () {
@@ -154,15 +147,7 @@ $("#id_study_question_types").change(function () {
             'questionType': question_type
         },
         success: function (response) {
-            words_number_select = $("#id_test_words_number_select");
-            words_number = response.numberOfWords;
-
-            words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
-            for (var i = 0; i < words_number; i++) {
-                words_number_select.append(
-                    '<option>' + (i + 1) + '</option>'
-                )
-            }
+            setNumberOftestWordSelect(response.numberOfWords);
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -181,15 +166,7 @@ $("#id_study_filtered_by_days").change(function () {
             'chosenDays': chosen_days
         },
         success: function (response) {
-            words_number_select = $("#id_test_words_number_select");
-            words_number = response.numberOfWords;
-
-            words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
-            for (var i = 0; i < words_number; i++) {
-                words_number_select.append(
-                    '<option>' + (i + 1) + '</option>'
-                )
-            }
+            setNumberOftestWordSelect(response.numberOfWords);
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -197,3 +174,17 @@ $("#id_study_filtered_by_days").change(function () {
         }
     });
 });
+
+function setNumberOftestWordSelect(number) {
+    words_number_select = $("#id_test_words_number_select");
+
+    if(number === undefined)
+        number = words_number_select.data("number");
+
+    words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
+    for (var i = 0; i < number; i++) {
+        words_number_select.append(
+            '<option>' + (i + 1) + '</option>'
+        )
+    }
+}
