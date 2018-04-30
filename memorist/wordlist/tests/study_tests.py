@@ -224,3 +224,30 @@ def test_random_order_in_making_a_test(client):
     test_word_list = response_data['testWordList']
 
     assert ordered_word_list != test_word_list
+
+
+@pytest.mark.django_db
+def test_get_number_of_words_when_type_and_days_are_changed(client):
+    testuser_login(client, 'test2')
+
+    response = client.get('/study/numofwords/', {
+        'questionType': 'Sentences',
+        'chosenDays': 'All',
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['numberOfWords'] == 2
+
+    response = client.get('/study/numofwords/', {
+        'questionType': 'Words',
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['numberOfWords'] == 2
+
+    response = client.get('/study/numofwords/', {
+        'chosenDays': '1',
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['numberOfWords'] == 4
