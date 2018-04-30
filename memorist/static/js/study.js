@@ -138,53 +138,37 @@ $("#id_test_words_number_select").change(function () {
 
 
 $("#id_study_question_types").change(function () {
-    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
-
-    $.ajax({
-        type: "GET",
-        url: "/study/numofwords/",
-        data: {
-            'questionType': question_type
-        },
-        success: function (response) {
-            setNumberOftestWordSelect(response.numberOfWords);
-        },
-        error: function (request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            alert("API 요청 실패");
-        }
-    });
+    setNumberOftestWordSelect();
 });
 
 $("#id_study_filtered_by_days").change(function () {
+    setNumberOftestWordSelect();
+});
+
+function setNumberOftestWordSelect() {
+    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
     var chosen_days = $("#id_study_filtered_by_days option:selected").val();
+
+    words_number_select = $("#id_test_words_number_select");
 
     $.ajax({
         type: "GET",
         url: "/study/numofwords/",
         data: {
+            'questionType': question_type,
             'chosenDays': chosen_days
         },
         success: function (response) {
-            setNumberOftestWordSelect(response.numberOfWords);
+            words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
+            for (var i = 0; i < response.numberOfWords; i++) {
+                words_number_select.append(
+                    '<option>' + (i + 1) + '</option>'
+                )
+            }
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             alert("API 요청 실패");
         }
     });
-});
-
-function setNumberOftestWordSelect(number) {
-    words_number_select = $("#id_test_words_number_select");
-
-    if(number === undefined)
-        number = words_number_select.data("number");
-
-    words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
-    for (var i = 0; i < number; i++) {
-        words_number_select.append(
-            '<option>' + (i + 1) + '</option>'
-        )
-    }
 }
