@@ -7,4 +7,3 @@ class SignUpView(CreateView):
     form_class = SignUpForm
     success_url = '/login/'
     template_name = 'signup.html'
-
