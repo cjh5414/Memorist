@@ -12,12 +12,14 @@ def test_signup(client):
     response = client.get('/signup/')
     assert 'Sign Up' in response.content.decode('utf-8')
     assert 'ID' in response.content.decode('utf-8')
+    assert 'NAME' in response.content.decode('utf-8')
     assert 'EMAIL' in response.content.decode('utf-8')
     assert 'PASSWORD' in response.content.decode('utf-8')
     assert 'CONFIRM PASSWORD' in response.content.decode('utf-8')
 
     response = client.post('/signup/', {
         'username': 'memo1920',
+        'name': 'memokim',
         'email': 'memo1920@gmail.com',
         'password1': 'mm1234!',
         'password2': 'mm1234!',
@@ -28,6 +30,7 @@ def test_signup(client):
 
     user = User.objects.get(username='memo1920')
     assert user.email == 'memo1920@gmail.com'
+    assert user.name == 'memokim'
 
 
 @pytest.mark.django_db
