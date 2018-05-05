@@ -227,6 +227,25 @@ def test_random_order_in_making_a_test(client):
 
 
 @pytest.mark.django_db
+def test_pick_all_of_word_when_making_a_test(client):
+    testuser_login(client, 'test2')
+
+    response = client.get('/study/test/?num=all')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    words = Word.alive_objects.filter(user__username='test2')
+
+    assert len(test_word_list) == len(words)
+
+    test_question_list = []
+    for test_word in test_word_list:
+        test_question_list.append(test_word['question'])
+    for word in words:
+        assert word.question in test_question_list
+
+
+@pytest.mark.django_db
 def test_get_number_of_words_when_type_and_days_are_changed(client):
     testuser_login(client, 'test2')
 
