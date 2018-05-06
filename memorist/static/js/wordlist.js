@@ -1,7 +1,7 @@
 var lastClickedWordTbody;
 
 $(document).ready(function() {
-    $("#id_question").focus();
+    $("#id_search_word_list").focus();
 });
 
 $(".word_list_question, .word_list_answer").click(function() {
