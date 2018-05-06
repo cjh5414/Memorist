@@ -230,7 +230,7 @@ def test_random_order_in_making_a_test(client):
 def test_pick_all_of_word_when_making_a_test(client):
     testuser_login(client, 'test2')
 
-    response = client.get('/study/test/?num=all')
+    response = client.get('/study/test/?num=All')
     response_data = json.loads(response.content)
     test_word_list = response_data['testWordList']
 

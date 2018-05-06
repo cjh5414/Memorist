@@ -298,7 +298,7 @@ class MakeTest(LoginRequiredMixin, View):
         test_word_list = Word.alive_objects.filter(user=request.user)
 
         number = request.GET.get('num')
-        if number != "all":
+        if number != "All":
             test_word_list = test_word_list[len(test_word_list)-int(number):]
         json_result = []
         for word in test_word_list:
