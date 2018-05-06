@@ -41,7 +41,32 @@ $("#id_study_remove_btn").click(function () {
         url: "/words/" + $(this).data("id") + "/delete/",
         success: function (response) {
             if (response.result === "True") {
-                location.reload();
+                var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
+                var chosen_days = $("#id_study_filtered_by_days option:selected").val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/study/next/",
+                    data: {
+                        'questionType': question_type,
+                        'chosenDays': chosen_days
+                    },
+                    success: function (response) {
+                        if (response.errorType && response.errorType === "NotExist") {
+                            alert("해당 되는 단어가 없습니다.");
+                        }
+                        else {
+                            $("#id_study_remove_btn").data("id", response.id);
+                            $("#id_study_question_block").text(response.question);
+                            $("#id_study_answer_box").text(response.answer);
+                            $("#id_study_answer_block").hide();
+                        }
+                    },
+                    error: function (request, status, error) {
+                        console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                        alert("API 요청 실패");
+                    }
+                });
             }
         },
         error: function (request, status, error) {
