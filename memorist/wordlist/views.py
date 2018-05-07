@@ -295,9 +295,11 @@ class GetNumOfWords(LoginRequiredMixin, View):
 
 class MakeTest(LoginRequiredMixin, View):
     def get(self, request):
-        num = int(request.GET.get('num'))
-        alive_word_list = Word.alive_objects.filter(user=request.user)
-        test_word_list = alive_word_list[len(alive_word_list)-num:]
+        test_word_list = Word.alive_objects.filter(user=request.user)
+
+        number = request.GET.get('num')
+        if number != "All":
+            test_word_list = test_word_list[len(test_word_list)-int(number):]
         json_result = []
         for word in test_word_list:
             json_result.append({

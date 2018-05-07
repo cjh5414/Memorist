@@ -72,7 +72,7 @@ $("#id_make_test_btn").click(function () {
         },
         success: function (response) {
             test_word_list = response.testWordList;
-            for (i = 0; i < question_number; i++) {
+            for (i = 0; i < test_word_list.length; i++) {
                 test_table.append(
                     '<tr onClick="onClickTestCol(\'' + i + '\')">' +
                     '<td></td>' +
@@ -141,7 +141,9 @@ function setNumberOftestWordSelect() {
             'chosenDays': chosen_days
         },
         success: function (response) {
-            words_number_select.find('option').remove().end().append('<option disabled selected>Num</option>');
+            words_number_select.find('option').remove().end().append(
+                '<option disabled selected>Num</option>' +
+                '<option>All</option>');
             for (var i = 0; i < response.numberOfWords; i++) {
                 words_number_select.append(
                     '<option>' + (i + 1) + '</option>'
