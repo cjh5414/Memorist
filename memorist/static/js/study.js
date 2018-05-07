@@ -6,7 +6,8 @@ $("#id_study_confirm_btn").click(function () {
     $("#id_study_answer_block").show();
 });
 
-$("#id_study_next_btn").click(function () {
+
+function getNextWord() {
     var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
     var chosen_days = $("#id_study_filtered_by_days option:selected").val();
 
@@ -33,7 +34,9 @@ $("#id_study_next_btn").click(function () {
             alert("API 요청 실패");
         }
     });
-});
+}
+
+$("#id_study_next_btn").click(getNextWord);
 
 $("#id_study_remove_btn").click(function () {
     $.ajax({
@@ -41,7 +44,7 @@ $("#id_study_remove_btn").click(function () {
         url: "/words/" + $(this).data("id") + "/delete/",
         success: function (response) {
             if (response.result === "True") {
-                location.reload();
+                getNextWord();
             }
         },
         error: function (request, status, error) {
