@@ -44,7 +44,7 @@ $("#id_translate_button").click(function () {
             success: function (response) {
                 $("#id_answer").val(response.papago_translation_result);
                 if (response.glosbe_translation_result!==undefined) {
-                    for (i=0; i<response.glosbe_translation_result.length; i++) {
+                    for (var i=0; i<response.glosbe_translation_result.length; i++) {
                         $("#id_glosbe_result_group").append(
                             '<a href="#" class="list-group-item" onClick="onClickTranslatedResultList(\'' + response.glosbe_translation_result[i] + '\')">' +
                             response.glosbe_translation_result[i] + '</a>');
@@ -53,24 +53,18 @@ $("#id_translate_button").click(function () {
                 if (response.oxford_dictionary_result!==undefined) {
                     for (i=0; i<response.oxford_dictionary_result.length; i++) {
                         var entry = response.oxford_dictionary_result[i];
+                        var dictionary_result = "";
 
-                        $("#id_oxford_result_group").append(
-                            '<div>'
-                        );
+                        dictionary_result += "<div>";
+                        dictionary_result += '<h3 style="margin-top: 0;">' + (i+1) + ". " + entry['definitions'][0] + "</h3>";
 
-                        $("#id_oxford_result_group").append(
-                            '<h3>' + (i+1) + '. ' + entry['definitions'][0] + '</h3>'
-                        );
+                        for (var j=0; j<entry['examples'].length; j++)
+                            dictionary_result += "ex) " + entry['examples'][j] + "</br>";
 
-                        for (j=0; j<entry['examples'].length; j++) {
-                            $("#id_oxford_result_group").append(
-                                'ex) ' + entry['examples'][j] + '</br>'
-                            );
-                        }
+                        dictionary_result += "</br>";
+                        dictionary_result += "</div>";
 
-                        $("#id_oxford_result_group").append(
-                            '</div>'
-                        );
+                        $("#id_oxford_result_group").append(dictionary_result);
                     }
                 }
                 $("#id_question").focus();
