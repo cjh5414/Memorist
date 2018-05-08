@@ -29,6 +29,10 @@ function onClickTranslatedResultList(word) {
     $("#id_answer").val($("#id_answer").val() + ", " + word);
 }
 
+function onClickEnDictResultList(definition) {
+    $("#id_answer").val(definition);
+}
+
 $("#id_translate_button").click(function () {
     $("#id_glosbe_result_group").empty();
     $("#id_oxford_result_group").empty();
@@ -56,7 +60,9 @@ $("#id_translate_button").click(function () {
                         var dictionary_result = "";
 
                         dictionary_result += "<div>";
+                        dictionary_result += '<a href="#" onClick="onClickEnDictResultList(\'' + entry['definitions'][0] + '\')">';
                         dictionary_result += '<h3 style="margin-top: 0;">' + (i+1) + ". " + entry['definitions'][0] + "</h3>";
+                        dictionary_result += '</a>';
 
                         for (var j=0; j<entry['examples'].length; j++)
                             dictionary_result += "ex) " + entry['examples'][j] + "</br>";
