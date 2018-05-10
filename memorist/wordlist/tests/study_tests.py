@@ -246,10 +246,10 @@ def test_pick_all_of_word_when_making_a_test(client):
 
 
 @pytest.mark.django_db
-def test_get_number_of_words_when_type_and_days_are_changed(client):
+def test_get_number_of_words_when_status_of_study_is_changed(client):
     testuser_login(client, 'test2')
 
-    response = client.get('/study/numofwords/', {
+    response = client.get('/study/numberofwords/', {
         'questionType': 'Sentences',
         'chosenDays': 'All',
     })
@@ -257,14 +257,14 @@ def test_get_number_of_words_when_type_and_days_are_changed(client):
     response_data = json.loads(response.content)
     assert response_data['numberOfWords'] == 2
 
-    response = client.get('/study/numofwords/', {
+    response = client.get('/study/numberofwords/', {
         'questionType': 'Words',
     })
 
     response_data = json.loads(response.content)
     assert response_data['numberOfWords'] == 2
 
-    response = client.get('/study/numofwords/', {
+    response = client.get('/study/numberofwords/', {
         'chosenDays': '1',
     })
 

@@ -135,7 +135,7 @@ function setNumberOftestWordSelect() {
 
     $.ajax({
         type: "GET",
-        url: "/study/numofwords/",
+        url: "/study/numberofwords/",
         data: {
             'questionType': question_type,
             'chosenDays': chosen_days
