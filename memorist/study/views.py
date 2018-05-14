@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 
-# Create your views here.
+
+class QuestionTypeChangeView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        request.user.study.question_type = self.request.POST['question_type']
+        request.user.study.save()
+        request.user.save()
+
+        return JsonResponse({'result': 'Success'})
