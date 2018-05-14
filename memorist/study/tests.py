@@ -37,3 +37,31 @@ def test_change_question_type(client):
 
     user = User.objects.get(username='test')
     assert user.study.question_type == 'S'
+
+
+@pytest.mark.django_db
+def test_change_chosen_days(client):
+    testuser_login(client)
+
+    user = User.objects.get(username='test')
+    assert user.study.chosen_days == Study.ALL_DAYS
+
+    response = client.post('/accounts/study/chosen-days-change/', {
+        'chosen_days': 30,
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['result'] == 'Success'
+
+    user = User.objects.get(username='test')
+    assert user.study.chosen_days == 30
+
+    response = client.post('/accounts/study/chosen-days-change/', {
+        'chosen_days': -1,
+    })
+
+    response_data = json.loads(response.content)
+    assert response_data['result'] == 'Success'
+
+    user = User.objects.get(username='test')
+    assert user.study.chosen_days == -1

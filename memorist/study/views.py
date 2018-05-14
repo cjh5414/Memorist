@@ -10,3 +10,12 @@ class QuestionTypeChangeView(LoginRequiredMixin, View):
         request.user.save()
 
         return JsonResponse({'result': 'Success'})
+
+
+class ChosenDaysChangeView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        request.user.study.chosen_days = self.request.POST['chosen_days']
+        request.user.study.save()
+        request.user.save()
+
+        return JsonResponse({'result': 'Success'})
