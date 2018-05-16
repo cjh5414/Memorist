@@ -22,6 +22,24 @@ def test_create_study_when_account_is_created(client):
 
 
 @pytest.mark.django_db
+def test_update_study_when_account_is_updated(client):
+    user = User.objects.get(username="test")
+    study = Study.objects.get(user__username="test")
+
+    assert study.chosen_days == study.ALL_DAYS
+    assert study.question_type == 'A'
+
+    user.study.chosen_days = 20
+    user.study.question_type = 'S'
+    user.save()
+
+    changed_study = Study.objects.get(user__username="test")
+
+    assert changed_study.chosen_days == 20
+    assert changed_study.question_type == 'S'
+
+
+@pytest.mark.django_db
 def test_change_question_type(client):
     testuser_login(client)
 
