@@ -17,3 +17,13 @@ class ChosenDaysChangeView(LoginRequiredMixin, View):
         request.user.save()
 
         return JsonResponse({'result': 'Success'})
+
+
+class GetStatus(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        study = request.user.study
+
+        return JsonResponse({
+            'question_type': study.question_type,
+            'chosen_days': study.chosen_days,
+        })

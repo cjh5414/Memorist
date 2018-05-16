@@ -83,3 +83,25 @@ def test_change_chosen_days(client):
 
     user = User.objects.get(username='test')
     assert user.study.chosen_days == -1
+
+
+@pytest.mark.django_db
+def test_get_study_status(client):
+    testuser_login(client)
+    user = User.objects.get(username='test')
+
+    response = client.get('/accounts/study/status/')
+    response_data = json.loads(response.content)
+
+    assert response_data['question_type'] == 'A'
+    assert response_data['chosen_days'] == -1
+
+    user.study.question_type = 'S'
+    user.study.chosen_days = 15
+    user.save()
+
+    response = client.get('/accounts/study/status/')
+    response_data = json.loads(response.content)
+
+    assert response_data['question_type'] == 'S'
+    assert response_data['chosen_days'] == 15
