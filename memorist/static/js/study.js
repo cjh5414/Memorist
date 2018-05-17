@@ -8,16 +8,9 @@ $("#id_study_confirm_btn").click(function () {
 
 
 function getNextWord() {
-    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
-    var chosen_days = $("#id_study_filtered_by_days option:selected").val();
-
     $.ajax({
         type: "GET",
         url: "/study/next/",
-        data: {
-            'questionType': question_type,
-            'chosenDays': chosen_days
-        },
         success: function (response) {
             if (response.errorType && response.errorType === "NotExist") {
                 alert("해당 되는 단어가 없습니다.");
@@ -120,26 +113,53 @@ $("#id_test_words_number_select").change(function () {
 
 
 $("#id_study_question_types").change(function () {
+    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
+
+    $.ajax({
+        type: "POST",
+        url: "/accounts/study/question-type-change/",
+        data: {
+            'question_type': question_type[0]
+        },
+        success: function (response) {
+
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+
     setNumberOftestWordSelect();
 });
 
 $("#id_study_filtered_by_days").change(function () {
+    var chosen_days = $("#id_study_filtered_by_days option:selected").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/accounts/study/chosen-days-change/",
+        data: {
+            'chosen_days': chosen_days
+        },
+        success: function (response) {
+
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+
     setNumberOftestWordSelect();
 });
 
 function setNumberOftestWordSelect() {
-    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
-    var chosen_days = $("#id_study_filtered_by_days option:selected").val();
-
     words_number_select = $("#id_test_words_number_select");
 
     $.ajax({
         type: "GET",
         url: "/study/numberofwords/",
-        data: {
-            'questionType': question_type,
-            'chosenDays': chosen_days
-        },
         success: function (response) {
             words_number_select.find('option').remove().end().append(
                 '<option disabled selected>Num</option>' +

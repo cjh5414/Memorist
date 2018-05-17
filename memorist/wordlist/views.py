@@ -232,23 +232,22 @@ class WordStudy(LoginRequiredMixin, View):
 
 class WordStudyNext(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        question_type = request.GET.get('questionType')
-        chosen_days_str = request.GET.get('chosenDays')
-
+        study_status = request.user.study
         words_query_set = Word.alive_objects.filter(user=request.user)
-        if chosen_days_str is not None and chosen_days_str.isdigit():
+
+        if study_status.chosen_days > 0:
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)
             utc_dt = local_dt.astimezone(pytz.utc)
 
-            chosen_days = utc_dt - timedelta(days=int(chosen_days_str))
+            chosen_days = utc_dt - timedelta(days=study_status.chosen_days)
 
             words_query_set = words_query_set.filter(created_time__gt=chosen_days)
 
-        if question_type == "Words":
+        if study_status.question_type == "W":
             word = words_query_set.filter(question_type='W').order_by('?').first()
-        elif question_type == "Sentences":
+        elif study_status.question_type == "S":
             word = words_query_set.filter(question_type='S').order_by('?').first()
         else:
             word = words_query_set.order_by('?').first()
