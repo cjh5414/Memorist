@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/words/add/')),
     url(r'^', include('wordlist.urls')),
     url(r'^', include('account.urls')),
+    url(r'^accounts/study/', include('study.urls')),
 ]
 
 if settings.DEBUG:

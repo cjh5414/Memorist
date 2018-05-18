@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'raven.contrib.django.raven_compat',
     'bootstrap3',
     'wordlist',
-    'account'
+    'account',
+    'study',
 ]
 
 MIDDLEWARE = [
