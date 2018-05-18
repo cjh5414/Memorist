@@ -1,4 +1,5 @@
 function onClickPronounce(event, source) {
+    event.preventDefault();
     event.stopPropagation();
 
     if (source !== '' && source !== undefined) {
