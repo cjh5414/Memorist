@@ -121,6 +121,7 @@ $("#id_study_question_types").change(function () {
         data: {
             'question_type': question_type[0]
         },
+        async: false,
         success: function (response) {
 
         },
@@ -142,6 +143,7 @@ $("#id_study_filtered_by_days").change(function () {
         data: {
             'chosen_days': chosen_days
         },
+        async: false,
         success: function (response) {
 
         },
