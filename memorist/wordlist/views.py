@@ -235,7 +235,7 @@ class WordStudyNext(LoginRequiredMixin, View):
         study_status = request.user.study
         words_query_set = Word.alive_objects.filter(user=request.user)
 
-        if study_status.chosen_days > 0:
+        if study_status.chosen_days > -1:
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)
@@ -268,7 +268,7 @@ class GetNumOfWords(LoginRequiredMixin, View):
     def get(self, request):
         study_status = request.user.study
         words_query_set = Word.alive_objects.filter(user=request.user)
-        if study_status.chosen_days > 0:
+        if study_status.chosen_days > -1:
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)
@@ -292,7 +292,10 @@ class GetNumOfWords(LoginRequiredMixin, View):
 
 class MakeTest(LoginRequiredMixin, View):
     def get(self, request):
+        study_status = request.user.study
         test_word_list = Word.alive_objects.filter(user=request.user)
+        if study_status.question_type != 'A':
+            test_word_list = test_word_list.filter(question_type=study_status.question_type)
 
         number = request.GET.get('num')
         if number != "All":
