@@ -13,7 +13,6 @@ class QuestionTypeChangeView(LoginRequiredMixin, View):
 
 class ChosenDaysChangeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        print(self.request.POST['chosen_days'])
         request.user.study.chosen_days = self.request.POST['chosen_days']
         request.user.save()
 
