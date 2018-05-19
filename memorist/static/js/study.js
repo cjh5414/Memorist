@@ -6,7 +6,6 @@ $("#id_study_confirm_btn").click(function () {
     $("#id_study_answer_block").show();
 });
 
-
 function getNextWord() {
     $.ajax({
         type: "GET",
@@ -106,11 +105,9 @@ $("#id_check_test_answer_btn").click(function () {
     }
 });
 
-
 $("#id_test_words_number_select").change(function () {
     $("#id_make_test_btn").prop("disabled", false);
 });
-
 
 $("#id_study_question_types").change(function () {
     var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
@@ -158,6 +155,8 @@ $("#id_study_filtered_by_days").change(function () {
 
 function setNumberOftestWordSelect() {
     words_number_select = $("#id_test_words_number_select");
+    $("#id_make_test_btn").prop("disabled", true);
+    $("#id_check_test_answer_btn").prop("disabled", true);
 
     $.ajax({
         type: "GET",
