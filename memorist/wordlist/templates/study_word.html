@@ -6,13 +6,12 @@
     <div>
         <div class="form-group row" style="margin: 0; margin-left: 7px;">
             <div class="col-xs-1" id="id_study_question_types" style="padding: 0; width: 300px;">
-                <label class="radio-inline"><input type="radio" name="question_type" checked>All</label>
-                <label class="radio-inline"><input type="radio" name="question_type">Words</label>
-                <label class="radio-inline"><input type="radio" name="question_type">Sentences</label>
+                <label class="radio-inline"><input type="radio" name="question_type" value="A">All</label>
+                <label class="radio-inline"><input type="radio" name="question_type" value="W">Words</label>
+                <label class="radio-inline"><input type="radio" name="question_type" value="S">Sentences</label>
             </div>
             <div class="col-xs-1" style="padding: 0; width: 70px;">
                 <select id="id_study_filtered_by_days" class="form-control" style="margin: 0;">
-                    <option disabled selected>Days</option>
                     <option value=-1>All</option>
                     <option value=1>하루</option>
                     <option value=2>이틀</option>

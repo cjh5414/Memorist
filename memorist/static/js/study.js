@@ -1,11 +1,23 @@
 $(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: "/accounts/study/status/",
+        success: function (response) {
+            $("#id_study_question_types input[value=" + response.question_type + "]").prop("checked", true);
+            $("#id_study_filtered_by_days option[value=" + response.chosen_days + "]").prop("selected", true);
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+
     setNumberOftestWordSelect();
 });
 
 $("#id_study_confirm_btn").click(function () {
     $("#id_study_answer_block").show();
 });
-
 
 function getNextWord() {
     $.ajax({
@@ -106,21 +118,20 @@ $("#id_check_test_answer_btn").click(function () {
     }
 });
 
-
 $("#id_test_words_number_select").change(function () {
     $("#id_make_test_btn").prop("disabled", false);
 });
 
-
 $("#id_study_question_types").change(function () {
-    var question_type = $("#id_study_question_types input[name='question_type']:checked").parent().text();
+    var question_type = $("#id_study_question_types input[name='question_type']:checked").val();
 
     $.ajax({
         type: "POST",
         url: "/accounts/study/question-type-change/",
         data: {
-            'question_type': question_type[0]
+            'question_type': question_type
         },
+        async: false,
         success: function (response) {
 
         },
@@ -142,6 +153,7 @@ $("#id_study_filtered_by_days").change(function () {
         data: {
             'chosen_days': chosen_days
         },
+        async: false,
         success: function (response) {
 
         },
@@ -156,6 +168,8 @@ $("#id_study_filtered_by_days").change(function () {
 
 function setNumberOftestWordSelect() {
     words_number_select = $("#id_test_words_number_select");
+    $("#id_make_test_btn").prop("disabled", true);
+    $("#id_check_test_answer_btn").prop("disabled", true);
 
     $.ajax({
         type: "GET",

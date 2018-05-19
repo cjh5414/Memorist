@@ -237,6 +237,39 @@ def test_pick_all_of_word_when_making_a_test(client):
 
 
 @pytest.mark.django_db
+def test_make_a_test_when_study_status_are_chosen(client):
+    testuser_login(client, 'test2')
+    user = User.objects.get(username='test2')
+
+    user.study.question_type = 'W'
+    user.save()
+    response = client.get('/study/test/?num=All')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    words = Word.alive_objects.filter(user__username='test2').filter(question_type='W')
+
+    assert len(test_word_list) == len(words)
+
+    test_question_list = []
+    for test_word in test_word_list:
+        test_question_list.append(test_word['question'])
+    for word in words:
+        assert word.question in test_question_list
+
+    user.study.question_type = 'S'
+    user.save()
+    response = client.get('/study/test/?num=1')
+    response_data = json.loads(response.content)
+    test_word_list = response_data['testWordList']
+
+    word = Word.alive_objects.filter(user__username='test2').filter(question_type='S').order_by('created_time').last()
+
+    assert len(test_word_list) == 1
+    assert word.question == test_word_list[0]['question']
+
+
+@pytest.mark.django_db
 def test_get_number_of_words_when_status_of_study_is_changed(client):
     testuser_login(client, 'test2')
     user = User.objects.get(username='test2')
