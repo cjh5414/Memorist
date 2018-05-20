@@ -59,8 +59,7 @@ def test_study_api_from_only_own_word_list(client):
 
 @pytest.mark.django_db
 def test_study_only_words(client):
-    testuser_login(client, 'test2')
-    user = User.objects.get(username='test2')
+    user = testuser_login(client, 'test2')
     user.study.question_type = 'W'
     user.save()
 
@@ -72,8 +71,7 @@ def test_study_only_words(client):
 
 @pytest.mark.django_db
 def test_study_only_sentences(client):
-    testuser_login(client, 'test2')
-    user = User.objects.get(username='test2')
+    user = testuser_login(client, 'test2')
     user.study.question_type = 'S'
     user.save()
 
@@ -85,8 +83,7 @@ def test_study_only_sentences(client):
 
 @pytest.mark.django_db
 def test_study_words_chosen_by_days(client):
-    testuser_login(client, 'empty_words_test')
-    test_user = User.objects.get(username='empty_words_test')
+    test_user = testuser_login(client, 'empty_words_test')
 
     words = []
     words.append(Word.objects.create(question='오늘 단어', answer="today's word", user_id=test_user.id))
@@ -110,8 +107,7 @@ def test_study_words_chosen_by_days(client):
 
 @pytest.mark.django_db
 def test_if_there_is_no_word_in_chosen_period(client):
-    testuser_login(client, 'empty_words_test')
-    test_user = User.objects.get(username='empty_words_test')
+    test_user = testuser_login(client, 'empty_words_test')
 
     word = Word.objects.create(question='오늘 단어', answer="today's word", user_id=test_user.id)
     word.created_time = word.created_time - timedelta(days=3)
@@ -128,8 +124,7 @@ def test_if_there_is_no_word_in_chosen_period(client):
 
 @pytest.mark.django_db
 def test_check_error_when_there_are_only_words(client):
-    testuser_login(client)
-    user = User.objects.get(username='test')
+    user = testuser_login(client)
     user.study.question_type = 'S'
     user.save()
     response = client.get('/study/next/')
@@ -137,8 +132,7 @@ def test_check_error_when_there_are_only_words(client):
     response_data = json.loads(response.content)
     assert response_data['errorType'] == 'NotExist'
 
-    testuser_login(client, 'test2')
-    user2 = User.objects.get(username='test2')
+    user2 = testuser_login(client, 'test2')
     user2.study.question_type = 'S'
     user2.save()
     response = client.get('/study/next/')
@@ -238,11 +232,10 @@ def test_pick_all_of_word_when_making_a_test(client):
 
 @pytest.mark.django_db
 def test_make_a_test_when_study_status_are_chosen(client):
-    testuser_login(client, 'test2')
-    user = User.objects.get(username='test2')
-
+    user = testuser_login(client, 'test2')
     user.study.question_type = 'W'
     user.save()
+
     response = client.get('/study/test/?num=All')
     response_data = json.loads(response.content)
     test_word_list = response_data['testWordList']
@@ -271,9 +264,7 @@ def test_make_a_test_when_study_status_are_chosen(client):
 
 @pytest.mark.django_db
 def test_get_number_of_words_when_status_of_study_is_changed(client):
-    testuser_login(client, 'test2')
-    user = User.objects.get(username='test2')
-
+    user = testuser_login(client, 'test2')
     user.study.question_type = 'S'
     user.study.chosen_days = user.study.ALL_DAYS
     user.save()
