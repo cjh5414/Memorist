@@ -41,9 +41,7 @@ def test_update_study_when_account_is_updated(client):
 
 @pytest.mark.django_db
 def test_change_question_type(client):
-    testuser_login(client)
-
-    user = User.objects.get(username='test')
+    user = testuser_login(client)
     assert user.study.question_type == 'A'
 
     response = client.post('/accounts/study/question-type-change/', {
@@ -59,9 +57,7 @@ def test_change_question_type(client):
 
 @pytest.mark.django_db
 def test_change_chosen_days(client):
-    testuser_login(client)
-
-    user = User.objects.get(username='test')
+    user = testuser_login(client)
     assert user.study.chosen_days == Study.ALL_DAYS
 
     response = client.post('/accounts/study/chosen-days-change/', {
@@ -87,8 +83,7 @@ def test_change_chosen_days(client):
 
 @pytest.mark.django_db
 def test_get_study_status(client):
-    testuser_login(client)
-    user = User.objects.get(username='test')
+    user = testuser_login(client)
 
     response = client.get('/accounts/study/status/')
     response_data = json.loads(response.content)

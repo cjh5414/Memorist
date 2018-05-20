@@ -5,6 +5,7 @@ from account.models import User
 @pytest.mark.django_db
 def testuser_login(client, username='test'):
     client.post('/login/', {'username': username, 'password': 'test1234!'})
+    return User.objects.get(username=username)
 
 
 @pytest.mark.django_db
