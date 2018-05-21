@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'wordlist',
     'account',
-    'study',
+    'studystatus',
 ]
 
 MIDDLEWARE = [

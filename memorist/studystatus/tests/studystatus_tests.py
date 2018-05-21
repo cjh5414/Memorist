@@ -1,7 +1,7 @@
 import pytest
 import json
 
-from study.models import Study
+from studystatus.models import StudyStatus
 from account.models import User
 from account.account_tests import testuser_login
 
@@ -16,24 +16,24 @@ def test_create_study_when_account_is_created(client):
         'password2': 'kim1234',
     })
 
-    study = Study.objects.get(user__username='studytest')
-    assert study.chosen_days == study.ALL_DAYS
-    assert study.question_type == 'A'
+    studystatus = StudyStatus.objects.get(user__username='studytest')
+    assert studystatus.chosen_days == studystatus.ALL_DAYS
+    assert studystatus.question_type == 'A'
 
 
 @pytest.mark.django_db
 def test_update_study_when_account_is_updated(client):
     user = User.objects.get(username="test")
-    study = Study.objects.get(user__username="test")
+    studystatus = StudyStatus.objects.get(user__username="test")
 
-    assert study.chosen_days == study.ALL_DAYS
-    assert study.question_type == 'A'
+    assert studystatus.chosen_days == studystatus.ALL_DAYS
+    assert studystatus.question_type == 'A'
 
-    user.study.chosen_days = 20
-    user.study.question_type = 'S'
+    user.studystatus.chosen_days = 20
+    user.studystatus.question_type = 'S'
     user.save()
 
-    changed_study = Study.objects.get(user__username="test")
+    changed_study = StudyStatus.objects.get(user__username="test")
 
     assert changed_study.chosen_days == 20
     assert changed_study.question_type == 'S'
@@ -41,12 +41,10 @@ def test_update_study_when_account_is_updated(client):
 
 @pytest.mark.django_db
 def test_change_question_type(client):
-    testuser_login(client)
+    user = testuser_login(client)
+    assert user.studystatus.question_type == 'A'
 
-    user = User.objects.get(username='test')
-    assert user.study.question_type == 'A'
-
-    response = client.post('/accounts/study/question-type-change/', {
+    response = client.post('/accounts/studystatus/question-type-change/', {
         'question_type': 'S'
     })
 
@@ -54,17 +52,15 @@ def test_change_question_type(client):
     assert response_data['result'] == 'Success'
 
     user = User.objects.get(username='test')
-    assert user.study.question_type == 'S'
+    assert user.studystatus.question_type == 'S'
 
 
 @pytest.mark.django_db
 def test_change_chosen_days(client):
-    testuser_login(client)
+    user = testuser_login(client)
+    assert user.studystatus.chosen_days == StudyStatus.ALL_DAYS
 
-    user = User.objects.get(username='test')
-    assert user.study.chosen_days == Study.ALL_DAYS
-
-    response = client.post('/accounts/study/chosen-days-change/', {
+    response = client.post('/accounts/studystatus/chosen-days-change/', {
         'chosen_days': 30,
     })
 
@@ -72,9 +68,9 @@ def test_change_chosen_days(client):
     assert response_data['result'] == 'Success'
 
     user = User.objects.get(username='test')
-    assert user.study.chosen_days == 30
+    assert user.studystatus.chosen_days == 30
 
-    response = client.post('/accounts/study/chosen-days-change/', {
+    response = client.post('/accounts/studystatus/chosen-days-change/', {
         'chosen_days': -1,
     })
 
@@ -82,25 +78,24 @@ def test_change_chosen_days(client):
     assert response_data['result'] == 'Success'
 
     user = User.objects.get(username='test')
-    assert user.study.chosen_days == -1
+    assert user.studystatus.chosen_days == -1
 
 
 @pytest.mark.django_db
-def test_get_study_status(client):
-    testuser_login(client)
-    user = User.objects.get(username='test')
+def test_get_studystatus(client):
+    user = testuser_login(client)
 
-    response = client.get('/accounts/study/status/')
+    response = client.get('/accounts/studystatus/')
     response_data = json.loads(response.content)
 
     assert response_data['question_type'] == 'A'
     assert response_data['chosen_days'] == -1
 
-    user.study.question_type = 'S'
-    user.study.chosen_days = 15
+    user.studystatus.question_type = 'S'
+    user.studystatus.chosen_days = 15
     user.save()
 
-    response = client.get('/accounts/study/status/')
+    response = client.get('/accounts/studystatus/')
     response_data = json.loads(response.content)
 
     assert response_data['question_type'] == 'S'

@@ -291,8 +291,7 @@ def test_prounce(client):
 
 @pytest.mark.django_db
 def test_search_words(client):
-    testuser_login(client, 'empty_words_test')
-    test_user = User.objects.get(username='empty_words_test')
+    test_user = testuser_login(client, 'empty_words_test')
 
     words = []
     words.append(Word.objects.create(question='테스트1', answer="word", user_id=test_user.id))

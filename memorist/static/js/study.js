@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "/accounts/study/status/",
+        url: "/accounts/studystatus/",
         success: function (response) {
             $("#id_study_question_types input[value=" + response.question_type + "]").prop("checked", true);
             $("#id_study_filtered_by_days option[value=" + response.chosen_days + "]").prop("selected", true);
@@ -127,7 +127,7 @@ $("#id_study_question_types").change(function () {
 
     $.ajax({
         type: "POST",
-        url: "/accounts/study/question-type-change/",
+        url: "/accounts/studystatus/question-type-change/",
         data: {
             'question_type': question_type
         },
@@ -149,7 +149,7 @@ $("#id_study_filtered_by_days").change(function () {
 
     $.ajax({
         type: "POST",
-        url: "/accounts/study/chosen-days-change/",
+        url: "/accounts/studystatus/chosen-days-change/",
         data: {
             'chosen_days': chosen_days
         },
