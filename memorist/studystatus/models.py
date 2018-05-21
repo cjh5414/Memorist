@@ -6,7 +6,7 @@ from account.models import User
 from utils.models import TimeStampedModel
 
 
-class Study(TimeStampedModel):
+class StudyStatus(TimeStampedModel):
     ALL_DAYS = -1
     QUESTION_TYPES = (
         ('A', 'All'),
@@ -21,9 +21,9 @@ class Study(TimeStampedModel):
 @receiver(post_save, sender=User)
 def create_user_study(sender, instance, created, **kwargs):
     if created:
-        Study.objects.create(user=instance)
+        StudyStatus.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_user_study(sender, instance, **kwargs):
-    instance.study.save()
+    instance.studystatus.save()

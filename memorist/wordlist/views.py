@@ -232,22 +232,22 @@ class WordStudy(LoginRequiredMixin, View):
 
 class WordStudyNext(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        study_status = request.user.study
+        studystatus = request.user.studystatus
         words_query_set = Word.alive_objects.filter(user=request.user)
 
-        if study_status.chosen_days > -1:
+        if studystatus.chosen_days > -1:
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)
             utc_dt = local_dt.astimezone(pytz.utc)
 
-            chosen_days = utc_dt - timedelta(days=study_status.chosen_days)
+            chosen_days = utc_dt - timedelta(days=studystatus.chosen_days)
 
             words_query_set = words_query_set.filter(created_time__gt=chosen_days)
 
-        if study_status.question_type == "W":
+        if studystatus.question_type == "W":
             word = words_query_set.filter(question_type='W').order_by('?').first()
-        elif study_status.question_type == "S":
+        elif studystatus.question_type == "S":
             word = words_query_set.filter(question_type='S').order_by('?').first()
         else:
             word = words_query_set.order_by('?').first()
@@ -266,21 +266,21 @@ class WordStudyNext(LoginRequiredMixin, View):
 
 class GetNumOfWords(LoginRequiredMixin, View):
     def get(self, request):
-        study_status = request.user.study
+        studystatus = request.user.studystatus
         words_query_set = Word.alive_objects.filter(user=request.user)
-        if study_status.chosen_days > -1:
+        if studystatus.chosen_days > -1:
             local = pytz.timezone("Asia/Seoul")
             naive = datetime.now()
             local_dt = local.localize(naive, is_dst=None)
             utc_dt = local_dt.astimezone(pytz.utc)
 
-            chosen_days = utc_dt - timedelta(days=study_status.chosen_days)
+            chosen_days = utc_dt - timedelta(days=studystatus.chosen_days)
 
             words_query_set = words_query_set.filter(created_time__gt=chosen_days)
 
-        if study_status.question_type == "W":
+        if studystatus.question_type == "W":
             num = words_query_set.filter(question_type='W').count()
-        elif study_status.question_type == "S":
+        elif studystatus.question_type == "S":
             num = words_query_set.filter(question_type='S').count()
         else:
             num = words_query_set.count()
@@ -292,10 +292,10 @@ class GetNumOfWords(LoginRequiredMixin, View):
 
 class MakeTest(LoginRequiredMixin, View):
     def get(self, request):
-        study_status = request.user.study
+        studystatus = request.user.studystatus
         test_word_list = Word.alive_objects.filter(user=request.user)
-        if study_status.question_type != 'A':
-            test_word_list = test_word_list.filter(question_type=study_status.question_type)
+        if studystatus.question_type != 'A':
+            test_word_list = test_word_list.filter(question_type=studystatus.question_type)
 
         number = request.GET.get('num')
         if number != "All":

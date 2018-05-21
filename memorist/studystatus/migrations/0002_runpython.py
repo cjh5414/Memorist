@@ -4,20 +4,20 @@ from django.db import migrations
 
 def forwards_func(apps, schema_editor):
     User = apps.get_model("account", "User")
-    Study = apps.get_model("study", "Study")
+    StudyStatus = apps.get_model("studystatus", "StudyStatus")
     for user in User.objects.all():
-        Study.objects.create(user=user)
+        StudyStatus.objects.create(user=user)
 
 
 def reverse_func(apps, schema_editor):
-    Study = apps.get_model("study", "Study")
+    StudyStatus = apps.get_model("studystatus", "StudyStatus")
     db_alias = schema_editor.connection.alias
-    Study.objects.using(db_alias).all().delete()
+    StudyStatus.objects.using(db_alias).all().delete()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('study', '0001_initial'),
+        ('studystatus', '0001_initial'),
     ]
 
     operations = [

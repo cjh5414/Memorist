@@ -5,7 +5,7 @@ from django.http import JsonResponse
 
 class QuestionTypeChangeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        request.user.study.question_type = self.request.POST['question_type']
+        request.user.studystatus.question_type = self.request.POST['question_type']
         request.user.save()
 
         return JsonResponse({'result': 'Success'})
@@ -13,7 +13,7 @@ class QuestionTypeChangeView(LoginRequiredMixin, View):
 
 class ChosenDaysChangeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        request.user.study.chosen_days = self.request.POST['chosen_days']
+        request.user.studystatus.chosen_days = self.request.POST['chosen_days']
         request.user.save()
 
         return JsonResponse({'result': 'Success'})
@@ -21,9 +21,9 @@ class ChosenDaysChangeView(LoginRequiredMixin, View):
 
 class GetStatus(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        study = request.user.study
+        studystatus = request.user.studystatus
 
         return JsonResponse({
-            'question_type': study.question_type,
-            'chosen_days': study.chosen_days,
+            'question_type': studystatus.question_type,
+            'chosen_days': studystatus.chosen_days,
         })
