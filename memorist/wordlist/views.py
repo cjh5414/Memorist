@@ -315,6 +315,16 @@ class MakeTest(LoginRequiredMixin, View):
         })
 
 
+class GetStudyProgress(LoginRequiredMixin, View):
+    def get(self, request):
+        total_words_num = Word.objects.filter(user=request.user).count()
+        remain_words_num = Word.alive_objects.filter(user=request.user).count()
+        return JsonResponse({
+            'totalNumberOfWords': total_words_num,
+            'remainNumberOfWords': remain_words_num
+        })
+
+
 class Pronounce(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         question = request.POST['question']

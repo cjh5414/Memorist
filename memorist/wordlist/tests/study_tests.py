@@ -287,3 +287,16 @@ def test_get_number_of_words_when_status_of_study_is_changed(client):
     response = client.get('/study/numberofwords/')
     response_data = json.loads(response.content)
     assert response_data['numberOfWords'] == 4
+
+
+@pytest.mark.django_db
+def test_get_progress_of_study(client):
+    user = testuser_login(client, 'test2')
+
+    total_words_num = Word.objects.filter(user=user).count()
+    remain_words_num = Word.alive_objects.filter(user=user).count()
+
+    response = client.get('/study/progress/')
+    response_data = json.loads(response.content)
+    assert response_data['totalNumberOfWords'] == total_words_num
+    assert response_data['remainNumberOfWords'] == remain_words_num
