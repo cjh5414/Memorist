@@ -321,7 +321,7 @@ class GetStudyProgress(LoginRequiredMixin, View):
         remain_words_num = Word.alive_objects.filter(user=request.user).count()
         return JsonResponse({
             'totalNumberOfWords': total_words_num,
-            'remainNumberOfWords': remain_words_num
+            'studiedNumberOfWords': total_words_num - remain_words_num
         })
 
 

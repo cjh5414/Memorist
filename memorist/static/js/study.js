@@ -12,6 +12,21 @@ $(document).ready(function () {
         }
     });
 
+    $.ajax({
+        type: "GET",
+        url: "/study/progress/",
+        success: function (response) {
+            $("#id_study_progress_studied_num").text(response.studiedNumberOfWords);
+            $("#id_study_progress_total_num").text(response.totalNumberOfWords);
+            var percentage = response.studiedNumberOfWords/response.totalNumberOfWords*100;
+            $("#id_study_progress_percentage").text(percentage.toFixed(1));
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+
     setNumberOftestWordSelect();
 });
 
