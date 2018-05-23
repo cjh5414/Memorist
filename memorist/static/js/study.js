@@ -2,6 +2,7 @@ $(document).ready(function () {
     $.ajax({
         type: "GET",
         url: "/accounts/studystatus/",
+        async: false,
         success: function (response) {
             $("#id_study_question_types input[value=" + response.question_type + "]").prop("checked", true);
             $("#id_study_filtered_by_days option[value=" + response.chosen_days + "]").prop("selected", true);
@@ -11,6 +12,8 @@ $(document).ready(function () {
             alert("API 요청 실패");
         }
     });
+
+    updateStudyProgressBar();
 
     setNumberOftestWordSelect();
 });
@@ -47,6 +50,7 @@ $("#id_study_remove_btn").click(function () {
     $.ajax({
         type: "POST",
         url: "/words/" + $(this).data("id") + "/delete/",
+        async: false,
         success: function (response) {
             if (response.result === "True") {
                 getNextWord();
@@ -57,6 +61,8 @@ $("#id_study_remove_btn").click(function () {
             alert("API 요청 실패");
         }
     });
+
+    updateStudyProgressBar();
 });
 
 $("#id_make_test_btn").click(function () {
@@ -183,6 +189,25 @@ function setNumberOftestWordSelect() {
                     '<option>' + (i + 1) + '</option>'
                 )
             }
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+}
+
+function updateStudyProgressBar() {
+    $.ajax({
+        type: "GET",
+        url: "/study/progress/",
+        async: false,
+        success: function (response) {
+            $("#id_study_progress_studied_num").text(response.studiedNumberOfWords);
+            $("#id_study_progress_total_num").text(response.totalNumberOfWords);
+            var percentage = response.studiedNumberOfWords/response.totalNumberOfWords*100;
+            $("#id_study_progress_percentage").text(percentage.toFixed(1));
+            $("#id_study_progress_bar").css("width", percentage + "%");
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

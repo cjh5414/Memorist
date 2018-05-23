@@ -4,6 +4,14 @@
 
 {% block body %}
     <div>
+        <div class="progress">
+            <div id="id_study_progress_bar" class="progress-bar progress-bar-striped active" role="progressbar"
+                 aria-valuenow="40" aria-value66min="0" aria-valuemax="100" style="width:40%">
+                학습 진행률 <span id="id_study_progress_percentage">40</span>%
+                 (<span id="id_study_progress_studied_num">4</span>/<span id="id_study_progress_total_num">10</span>)
+            </div>
+        </div>
+
         <div class="form-group row" style="margin: 0; margin-left: 7px;">
             <div class="col-xs-1" id="id_study_question_types" style="padding: 0; width: 300px;">
                 <label class="radio-inline"><input type="radio" name="question_type" value="A">All</label>
