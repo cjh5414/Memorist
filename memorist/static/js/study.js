@@ -2,6 +2,7 @@ $(document).ready(function () {
     $.ajax({
         type: "GET",
         url: "/accounts/studystatus/",
+        async: false,
         success: function (response) {
             $("#id_study_question_types input[value=" + response.question_type + "]").prop("checked", true);
             $("#id_study_filtered_by_days option[value=" + response.chosen_days + "]").prop("selected", true);
@@ -15,6 +16,7 @@ $(document).ready(function () {
     $.ajax({
         type: "GET",
         url: "/study/progress/",
+        async: false,
         success: function (response) {
             $("#id_study_progress_studied_num").text(response.studiedNumberOfWords);
             $("#id_study_progress_total_num").text(response.totalNumberOfWords);
@@ -62,10 +64,26 @@ $("#id_study_remove_btn").click(function () {
     $.ajax({
         type: "POST",
         url: "/words/" + $(this).data("id") + "/delete/",
+        async: false,
         success: function (response) {
             if (response.result === "True") {
                 getNextWord();
             }
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("API 요청 실패");
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/study/progress/",
+        success: function (response) {
+            $("#id_study_progress_studied_num").text(response.studiedNumberOfWords);
+            $("#id_study_progress_total_num").text(response.totalNumberOfWords);
+            var percentage = response.studiedNumberOfWords/response.totalNumberOfWords*100;
+            $("#id_study_progress_percentage").text(percentage.toFixed(1));
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
