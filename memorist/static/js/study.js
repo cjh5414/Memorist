@@ -206,6 +206,11 @@ function updateStudyProgressBar() {
             $("#id_study_progress_studied_num").text(response.studiedNumberOfWords);
             $("#id_study_progress_total_num").text(response.totalNumberOfWords);
             var percentage = response.studiedNumberOfWords/response.totalNumberOfWords*100;
+            if(percentage > 49)
+                $("#id_study_progress_text").removeClass("progress_text");
+            else
+                $("#id_study_progress_text").addClass("progress_text");
+
             $("#id_study_progress_percentage").text(percentage.toFixed(1));
             $("#id_study_progress_bar").css("width", percentage + "%");
         },
