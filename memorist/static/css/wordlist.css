@@ -38,3 +38,17 @@ table td:first-child, th:first-child {
     top: 4px;
     font-size: 21px;
 }
+
+.progress {
+    position: relative;
+}
+
+.progress p {
+    font-size: 110%;
+}
+
+.progress .progress_text {
+    position: absolute;
+    width: 100%;
+    color: #000000;
+ }
