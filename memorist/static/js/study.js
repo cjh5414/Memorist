@@ -159,7 +159,6 @@ $("#id_study_filtered_by_days").change(function () {
         data: {
             'chosen_days': chosen_days
         },
-        async: false,
         success: function (response) {
 
         },
