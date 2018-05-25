@@ -133,7 +133,7 @@ $("#id_study_question_types").change(function () {
 
     $.ajax({
         type: "POST",
-        url: "/accounts/studystatus/question-type-change/",
+        url: "/accounts/studystatus/update-question-type/",
         data: {
             'question_type': question_type
         },
@@ -155,7 +155,7 @@ $("#id_study_filtered_by_days").change(function () {
 
     $.ajax({
         type: "POST",
-        url: "/accounts/studystatus/chosen-days-change/",
+        url: "/accounts/studystatus/update-chosen-days/",
         data: {
             'chosen_days': chosen_days
         },

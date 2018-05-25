@@ -5,7 +5,7 @@ from studystatus.views import *
 app_name = 'study'
 
 urlpatterns = [
-    url(r'^question-type-change/', QuestionTypeChangeView.as_view(), name='question_type_change'),
-    url(r'^chosen-days-change/', ChosenDaysChangeView.as_view(), name='chosen_days_change'),
+    url(r'^update-question-type/', UpdateQuestionTypeView.as_view(), name='update_question_type'),
+    url(r'^update-chosen-days/', UpdateChosenDaysView.as_view(), name='update_chosen_days'),
     url(r'^', GetStatus.as_view(), name='get_status'),
 ]
