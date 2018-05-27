@@ -44,7 +44,7 @@ def test_change_question_type(client):
     user = testuser_login(client)
     assert user.studystatus.question_type == 'A'
 
-    response = client.post('/accounts/studystatus/question-type-change/', {
+    response = client.post('/accounts/studystatus/update-question-type/', {
         'question_type': 'S'
     })
 
@@ -60,7 +60,7 @@ def test_change_chosen_days(client):
     user = testuser_login(client)
     assert user.studystatus.chosen_days == StudyStatus.ALL_DAYS
 
-    response = client.post('/accounts/studystatus/chosen-days-change/', {
+    response = client.post('/accounts/studystatus/update-chosen-days/', {
         'chosen_days': 30,
     })
 
@@ -70,7 +70,7 @@ def test_change_chosen_days(client):
     user = User.objects.get(username='test')
     assert user.studystatus.chosen_days == 30
 
-    response = client.post('/accounts/studystatus/chosen-days-change/', {
+    response = client.post('/accounts/studystatus/update-chosen-days/', {
         'chosen_days': -1,
     })
 

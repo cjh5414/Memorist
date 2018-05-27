@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
 
-class QuestionTypeChangeView(LoginRequiredMixin, View):
+class UpdateQuestionTypeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         request.user.studystatus.question_type = self.request.POST['question_type']
         request.user.save()
@@ -11,7 +11,7 @@ class QuestionTypeChangeView(LoginRequiredMixin, View):
         return JsonResponse({'result': 'Success'})
 
 
-class ChosenDaysChangeView(LoginRequiredMixin, View):
+class UpdateChosenDaysView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         request.user.studystatus.chosen_days = self.request.POST['chosen_days']
         request.user.save()
