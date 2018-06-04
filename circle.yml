@@ -12,7 +12,9 @@ dependencies:
       
 test:
   override:
-    - pytest ./memorist
+    - pytest --cov=./memorist ./memorist
+  post:
+    - codecov
 
 deployment:
   production:
