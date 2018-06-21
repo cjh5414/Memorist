@@ -18,3 +18,5 @@ PAPAGO_API_CLIENT_SECRET | | Papago API client secret
 OXFORD_API_ID | | Oxford API ID 
 OXFORD_API_KEY | | Oxford API key
 
+
+[![Code Cov Badge](https://codecov.io/gh/cjh5414/Memorist/branch/master/graphs/badge.svg)](https://codecov.io/gh/cjh5414/Memorist/)
