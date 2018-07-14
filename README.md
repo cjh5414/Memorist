@@ -6,6 +6,9 @@
 
 - unit test with pytest
 
+## Continuous Integration
+
+- Circe CI
  
 ## Automatic Deployment
 
@@ -13,6 +16,9 @@
 - github Webhooks
 - scripts
 
+## Error Tracking
+
+- Sentry
 
 ## Environment Variables
 
